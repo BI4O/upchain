@@ -221,3 +221,15 @@ contract Counter {      // 2.定义合约
 - 不用function关键词，且为回调函数
   - receive：一般没有输入参数，固定搭配`receive() external payable {}`
   - fallback：EVM在应对外部调用函数，没有找到该函数名时候调用，以及外部调用函数的时候如果有msg.data附带（有钱）且fallback有payable状态可变性的时候，可以接收到这些value（钱）
+  - 如果连fallback都没有，而远程又调用了一个不存在的函数，则会报错
+
+## 通用变量
+
+- block
+  - block.number：uint当前区块号
+  - block.timestamp：uint起始区块到当前区块以秒计的时间戳
+- msg
+  - msg.sender：address调用者的地址，可能是eoa钱包，也可能是一个合约地址
+  - msg.value：unit随消息发送的wei的数量（10^18 Wei = 1 ether）
+- tx
+  - tx.origin：address payable交易的发起者
