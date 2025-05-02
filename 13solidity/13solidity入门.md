@@ -231,5 +231,20 @@ contract Counter {      // 2.定义合约
 - msg
   - msg.sender：address调用者的地址，可能是eoa钱包，也可能是一个合约地址
   - msg.value：unit随消息发送的wei的数量（10^18 Wei = 1 ether）
+  - msg.data：“消息荷载”，一般来说就是完整的调用信息，如果是合约创建则是整个合约代码字节码，加上初始化函数的参数
+  - msg.sig：仅仅当合约某函数被调用时候有值，就是函数名字节码前四个字节
 - tx
   - tx.origin：address payable交易的发起者
+
+## 交易类型
+
+
+
+| 场景                                     | 外部交易三个字段                                             | 合约中读取到的                                               | 简要大白话说明                                               |
+| ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | :----------------------------------------------------------- |
+| **A. 简单转账 (EOA → EOA)**              | - `to`：目标外部账户地址<br>- `value`：1 ETH（假设）<br>- `data`：`0x`（空） | — 没有合约参与，`msg.*` 在合约里根本不会出现。               | 你就是给一个人转钱，对方不是合约，链上只改余额，没有执行任何合约代码。 |
+| **B. 合约函数调用 (EOA → Contract.foo)** | - `to`：合约地址<br>- `value`：0.5 ETH（假设）<br>- `data`：<br>`0xa9059cbb…000000…0005f5e100`<br>(4 字节 selector + 参数编码) | 在 `foo` 内部：<br>- `msg.sender` = 你的 EOA<br>- `msg.value` = 0.5 ETH<br>- `msg.data` = 整个字节流 `0xa9059cbb…000000…0005f5e100` ([docs.soliditylang.org][1])<br>- `msg.sig` = `0xa9059cbb` (前4字节)([docs.soliditylang.org][2]) | 这笔交易告诉合约“调用 foo(...) 这个函数，参数是 X，顺便给它 0.5 ETH”。`msg.data` 就是把“我想调用哪个函数、给什么参数”打包后的全部内容；`msg.sig` 仅是前 4 字节，表示“方法号”。 |
+| **C. 部署合约 (EOA → new Contract)**     | - `to`：`null`<br>- `value`：0 ETH 或者带一点 ETH<br>- `data`：<br>“初始化 initcode + 构造函数参数” | 在构造函数里：<br>- `msg.sender` = 你的 EOA<br>- `msg.value` = 附带的 ETH（若有）<br>- `msg.data` = 整个 initcode 包 + 构造参数编码 ([docs.soliditylang.org][1]) | 你不是在调用现有函数，而是在告诉 EVM：“这是我新合约的程序（+构造参数），请给它创建一个地址并运行这段代码”。`msg.data` 就是那大包程序和参数。 |
+
+[1]: https://docs.soliditylang.org/en/latest/units-and-global-variables.html?utm_source=chatgpt.com "Units and Globally Available Variables - Solidity Documentation"
+[2]: https://docs.soliditylang.org/en/latest/types.html?utm_source=chatgpt.com "Types — Solidity 0.8.30 documentation"
