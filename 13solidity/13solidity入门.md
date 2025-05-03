@@ -1,6 +1,6 @@
-# 13Solidity
+# 13 Solidity
 
-## 合约
+## 合约 Contract
 
 必要的组成
 
@@ -18,6 +18,8 @@ contract Counter {      // 2.定义合约
 }
 ```
 
+> [!note]
+>
 > 合约也是一种类型，创建合约可以用地址来创建，比如你有合约的接口+部署了的地址，那么就可以
 >
 > `IContract public contr = IContract(addr)`
@@ -28,10 +30,14 @@ contract Counter {      // 2.定义合约
 >
 > 在某合约代码里远程调用这个合约的方法
 
+---
 
 
-## 变量
 
+## 变量 Variable
+
+> [!note]
+>
 > ###### 格式：`变量类型 [可见性][可变状态] 变量名 [赋值]`
 >
 > 可见性：
@@ -92,6 +98,8 @@ contract Counter {      // 2.定义合约
 
 #### 二、引用类型
 
+> [!note]
+>
 > 引用类型赋值 = 拷贝
 >
 > 在函数的输入参数、输出参数、内部定义中，都需要声明存储位置
@@ -120,7 +128,9 @@ contract Counter {      // 2.定义合约
     - pop()，末尾删除第一个元素
     - 不能通过delete numbers[1] 这样来删除，如果实在要删需要手动把右边的数据往左挪
 
-  - > 永远不要想着在合约代码中遍历整个数组来做点什么，gas会非常高，虽然view和pure函数是不需要调用者gas fee的，但是EVM对一个交易（一次函数调用）是有gas limit的，比如EVM是3700万gas，而且你的免费交易因为没有tips会优先级非常靠后，导致很慢。小的十几个的元素的循环是可以接受的，多的尽量用链下聚合方式
+  - > [!caution]
+    >
+    > 永远不要想着在合约代码中遍历整个数组来做点什么，gas会非常高，虽然view和pure函数是不需要调用者gas fee的，但是EVM对一个交易（一次函数调用）是有gas limit的，比如EVM是3700万gas，而且你的免费交易因为没有tips会优先级非常靠后，导致很慢。小的十几个的元素的循环是可以接受的，多的尽量用链下聚合方式
 
 - ##### 字符串/字节类型（其实是特殊的数组）
 
@@ -163,10 +173,14 @@ contract Counter {      // 2.定义合约
 - 比较常用的是用uint或者address来 => struct来结合着使用
 - 可以用下标来访问`balance[anyAddr]`
 
+---
 
 
-## 函数
 
+## 函数 function
+
+> [!note]
+>
 > #### function 函数名([参数列表]) 可见性 [可变性] [returns(返回值)]
 
 ### 一、函数-可见性
@@ -223,22 +237,31 @@ contract Counter {      // 2.定义合约
   - fallback：EVM在应对外部调用函数，没有找到该函数名时候调用，以及外部调用函数的时候如果有msg.data附带（有钱）且fallback有payable状态可变性的时候，可以接收到这些value（钱）
   - 如果连fallback都没有，而远程又调用了一个不存在的函数，则会报错
 
-## 通用变量
+---
 
-- block
+
+
+## 通用变量 Global Variable
+
+- ##### block
+  
   - block.number：uint当前区块号
   - block.timestamp：uint起始区块到当前区块以秒计的时间戳
-- msg
+- ##### msg
+  
   - msg.sender：address调用者的地址，可能是eoa钱包，也可能是一个合约地址
   - msg.value：unit随消息发送的wei的数量（10^18 Wei = 1 ether）
   - msg.data：“消息荷载”，一般来说就是完整的调用信息，如果是合约创建则是整个合约代码字节码，加上初始化函数的参数
   - msg.sig：仅仅当合约某函数被调用时候有值，就是函数名字节码前四个字节
-- tx
+- ##### tx
+  
   - tx.origin：address payable交易的发起者
 
-## 交易类型
+---
 
 
+
+## 交易transaction
 
 | 场景                                     | 外部交易三个字段                                             | 合约中读取到的                                               | 简要大白话说明                                               |
 | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | :----------------------------------------------------------- |
@@ -246,5 +269,7 @@ contract Counter {      // 2.定义合约
 | **B. 合约函数调用 (EOA → Contract.foo)** | - `to`：合约地址<br>- `value`：0.5 ETH（假设）<br>- `data`：<br>`0xa9059cbb…000000…0005f5e100`<br>(4 字节 selector + 参数编码) | 在 `foo` 内部：<br>- `msg.sender` = 你的 EOA<br>- `msg.value` = 0.5 ETH<br>- `msg.data` = 整个字节流 `0xa9059cbb…000000…0005f5e100` ([docs.soliditylang.org][1])<br>- `msg.sig` = `0xa9059cbb` (前4字节)([docs.soliditylang.org][2]) | 这笔交易告诉合约“调用 foo(...) 这个函数，参数是 X，顺便给它 0.5 ETH”。`msg.data` 就是把“我想调用哪个函数、给什么参数”打包后的全部内容；`msg.sig` 仅是前 4 字节，表示“方法号”。 |
 | **C. 部署合约 (EOA → new Contract)**     | - `to`：`null`<br>- `value`：0 ETH 或者带一点 ETH<br>- `data`：<br>“初始化 initcode + 构造函数参数” | 在构造函数里：<br>- `msg.sender` = 你的 EOA<br>- `msg.value` = 附带的 ETH（若有）<br>- `msg.data` = 整个 initcode 包 + 构造参数编码 ([docs.soliditylang.org][1]) | 你不是在调用现有函数，而是在告诉 EVM：“这是我新合约的程序（+构造参数），请给它创建一个地址并运行这段代码”。`msg.data` 就是那大包程序和参数。 |
 
-[1]: https://docs.soliditylang.org/en/latest/units-and-global-variables.html?utm_source=chatgpt.com "Units and Globally Available Variables - Solidity Documentation"
-[2]: https://docs.soliditylang.org/en/latest/types.html?utm_source=chatgpt.com "Types — Solidity 0.8.30 documentation"
+- **EOA之间的转账交易**是最接近BTC的原理的，只有两头的地址加转账金额
+- **EOA调用合约的函数**，如果是可以附带value金额的，所有的金额都会被合约接收（除非对面的receive函数没有，或者对应的函数没有写payable）
+- **EOA调用合约的函数**附带的value金额，会全部进入合约余额，不需要在函数内特别声明`payable(address(this)).transfer(msg.value)`，这句话是多余的但不会报错，即使你硬要写，比如说想要只接受一半另一半退回，那也是不会实现的。
+- **EOA部署合约**的时候，是可以带value金额的，但前提是合约的constructor函数要带payable关键词

@@ -1,7 +1,9 @@
-# 14Solidity Advance
+# 14 Solidity Advance
 
-## 函数-修改器（修饰符）
+## 函数-修改器（modifier）
 
+>  [!note]
+>
 >  本质上是一个语法糖，编译期间就回拓展到函数的实现，所以其实只是帮你复制代码到各个函数上面，然在部署时候，msg.data编译的合约总字节码不可以超过2kb，所以要考虑情况使用。
 
 #### 案例一，不带参数
@@ -49,10 +51,14 @@ function marry(uint age) public over22(age) {
 }
 ```
 
+---
 
 
-## 回退
 
+## 回退revert
+
+> [!note]
+>
 > 为了保证事务性，solidity中条件不符合导致revert和require触发的时候，会回退，相当于这个函数没有执行过，但是gas费不会退还。
 
 ### require
@@ -89,7 +95,7 @@ function withdraw() public {
 - 底层是因为这个错误的selector被压缩为极短的独一无二的字节码`bytes4(keccak256("Unauthorized(...)")`，即使自定义错误里面有参数，那也是很省空间的
 - 而案例一或者require都要保存string字节码，抛出异常时候，从常量拷贝到内存，再打包到returndata里面给出
 
-#### 小总结
+#### :star: 小总结
 
 有字符串的revert和require     **VS**    revert+自定义error
 
@@ -98,14 +104,16 @@ function withdraw() public {
 | `require(cond, "…string…")` | 较大 (字符串常量)      | 拷贝字符串到内存   | 包含完整字符串         | 快速原型、小合约示例            |
 | `revert CustomError(...)`   | 小 (仅 selector)       | 仅写 selector+参数 | 4 byte selector＋参数  | 生产级、追求最优 gas 的合约设计 |
 
+---
+
 
 
 ## 错误处理try catch
 
-> 一般在远程调用中，需要用到try，因为你不知道对方合约会有什么类型的报错，可能是
->
-> 1. 带文字的如require(condition, msg)或revert(msg)
-> 2. 带自定义error之后主动抛出的revert CustomError()
+一般在远程调用中，需要用到try，因为你不知道对方合约会有什么类型的报错，可能
+
+1. 带文字的如require(condition, msg)或revert(msg)
+2. 带自定义error之后主动抛出的revert CustomError()
 
 ```solidity
 // try 需要写在合约的函数里
@@ -127,14 +135,57 @@ try remoteContract.widraw(amount) returns(bool isSuccess) {
 }
 ```
 
+> [!tip]
+>
+> 一般来说用两个catch就可以，就像上面的例子一样
+
+---
 
 
-## 事件
+
+## 事件event
+
+```solidity
+contract learnEvent {
+    receive() external payable {}
+		
+		// 一、定义事件
+    event MoneyUp(address indexed sender, uint amount);
+    function getMoreMoney() public payable {
+    		// 二、触发事件
+        emit MoneyUp(msg.sender, msg.value);
+    }
+}
+```
+
+- `event CustomEvent()`来在函数外定义
+- 可以带多个参数，比如`event CustomEvent(address sender)`
+- 可以带`indexed`这样在log里就可以被索引
+
+##### 例子中的call之后的log会呈现如下：
+
+```json
+{
+	"from": "0x589E276e8d27050387862DCE3986E6Fca3ae83Af",
+	"topic": "0xb4a0321935d78d0f1260708dea593a156064ccc48deece7e34c93fef97f1c4cb",
+	"event": "MoneyUp",
+	"args": {
+		"0": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+		"1": "1000000000",
+		"sender": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+		"amount": "1000000000"
+	}
+}
+```
+
+---
 
 
 
 ## 接口/继承
 
+> [!NOTE]
+>
 > 虽然都是用is来表示实现接口和继承合约，但是：
 >
 > 1. 接口是原合约给外部用的，只写public和external的函数，不能写状态变量和特殊函数
@@ -233,13 +284,15 @@ contract AAabsA is absA {
 - 父合约中那些本来就设计好了要被重写的合约应该加上`virtual`，更优雅
 - `super.add()`表示先运行一遍父合约的add，
 
-#### 速记
+#### :star:速记
 
-| 你希望合约马上部署上线 | ✅ 用 `contract` |
-| 你希望定义一个**规则和部分逻辑供子合约复用** | ✅ 用 `abstract contract` |
-| 你希望只提供最简函数签名供远程调用/标准化 | ✅ 用 `interface` |
+| 场景                                           | 推荐关键字          | 说明                                     |
+| ---------------------------------------------- | ------------------- | ---------------------------------------- |
+| ✅ 你希望合约马上部署上线                       | `contract`          | 可完整部署，包含状态变量 + 函数逻辑      |
+| ✅ 你希望定义一个**规则和部分逻辑供子合约复用** | `abstract contract` | 允许有未实现函数，不能直接部署           |
+| ✅ 你希望只提供最简函数签名供远程调用/标准化    | `interface`         | 只能包含函数签名、不能有状态变量或实现体 |
 
-> 注意：
+> [!important]
 >
 > receive函数的继承：没法直接继承，想要复用父合约函数逻辑，你要把它包装成一个onReceive函数，然后用来代替`super.reveice()`，因为receive是没法被主动调用的。
 >
