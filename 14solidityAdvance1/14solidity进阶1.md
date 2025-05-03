@@ -1,6 +1,6 @@
 # 14 Solidity Advance
 
-## 函数-修改器（modifier）
+## 函数修改器 modifier 
 
 >  [!note]
 >
@@ -308,7 +308,7 @@ contract AAabsA is absA {
 
 
 
-## 库
+## 库 Library
 
 > library
 >
