@@ -264,7 +264,9 @@ contract TestLib {
 >
 > 如果是external/public函数，编译后会生成delegatecall的操作，会触发等同于delegatecall的委托调用，按delagatecall收取gas费。
 
+---
 
 
 
+## EIP/ERC
 
