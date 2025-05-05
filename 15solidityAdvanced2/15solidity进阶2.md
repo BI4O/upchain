@@ -1,6 +1,6 @@
 # 15 Solidity 进阶 2
 
-### 交易底层-ABI 编码
+## 交易底层-ABI 编码
 
 调用一个合约的函数 = 想合约发送了一个交易
 
@@ -124,7 +124,9 @@
 
 ---
 
-### 交易底层-函数 call/delegatecall
+
+
+## 交易底层-函数 call/delegatecall
 
 拿到 payload 之后，相当于有了 calldata，那么我们可以做底层的调用`call`来模拟执行调用
 
@@ -207,3 +209,62 @@ addr.call{value: 1 ether, gas: 1000000}(new bytes(0));
 > ##### 对于仅仅涉及调用远程 view 函数
 >
 > - 可以使用`staticcall()`就行，跟`call()`一样，函数也会在远程的合约空间中运行，当然使用`call()`也行，不过`staticcall()`在调用**非 view 函数**的时候会自动报错禁止然后 revert
+
+---
+
+
+
+## 库library
+
+- 定义 `library Extend {}`，使用用`using Extend for ...`
+- 与合约类似，是函数的封装
+- 库没有状态变量，不能收ether
+- 库的函数有`external`/`public`的话，需要单独部署并委托调用
+- 如果库函数全部是`internal`，使用它的话库代码会嵌入和合约
+
+#### 示例一：内嵌库（99%的用法）
+
+拓展uint的方法
+
+```solidity
+library SafeMath {
+  function add(uint x, uint y) internal pure returns (uint) {
+    uint z = x + y;
+    require(z >= x, "uint overflow");
+
+    return z;
+  }
+}
+
+// 如果不在同一个文件内需要导入
+// import "path/to/SafaMath.sol"
+
+contract TestLib {
+	// using SafeMath for uint; 如果是语法糖写法要先声明
+
+	function testAdd(uint x, uint y) public pure returns (uint) {
+		// x.add(y); 和下面等价，是语法糖写法，add自动把x当第一个参数
+		uint sum = SafeMath.add(x, y);
+		return sum;
+	}
+}
+```
+
+> [!note]
+>
+> 因为SafeMath只含有internal函数，所以**不需要先部署库**，使用库就相当于把库代码复制了一份进去，这种只含有internal函数的是库最主要的用法
+
+#### 示例二：链接库（1%的用法）
+
+当库含有了external或者public方法，那么就需要部署，然后才能被使用，这样看来的话跟**继承**的用法完全重复，也丧失了library设计之初的优点（效率高、安全性高）。
+
+> [!tip]
+>
+> 如果是internal函数，编译后会触发內联，不会触发delegatecall的gas消耗
+>
+> 如果是external/public函数，编译后会生成delegatecall的操作，会触发等同于delegatecall的委托调用，按delagatecall收取gas费。
+
+
+
+
+
