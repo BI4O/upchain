@@ -1,0 +1,15 @@
+{
+  "name": "Elon Musk Avatar",
+  "description": "A stylized avatar of Elon Musk, the visionary entrepreneur behind SpaceX and Tesla.",
+  "image": "https://ipfs.io/ipfs/bafybeida6sphgpn5vatdsgdupjc6mf5eoz2crfcwagaxrjd4jdpkze7tjm/elon.png",
+  "attributes": [
+    {
+      "trait_type": "Person",
+      "value": "Elon Musk"
+    },
+    {
+      "trait_type": "Style",
+      "value": "Avatar"
+    }
+  ]
+}
