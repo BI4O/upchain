@@ -199,7 +199,45 @@ function mint(address to, uint256 tokenId) public {
 
 
 
+## NFT标准记忆
 
+#### 一、主权查询
+
+- balanceOf
+- ownerOf
+
+#### 二、主权执行
+
+- transferFrom
+- saveTransferFrom
+- saveTransferFrom(多一个data参数)
+
+#### 三、授权查询
+
+- getApproved(tokenid) -> addr
+- isApprovedForAll(owner, operator) -> bool
+
+#### 四、授权执行
+
+- approve(operator, tokenid)
+- setApprovalForAll(operator, bool)
+
+#### 五、自定义函数
+
+除了前面9个以外，继承了ERC721之后
+
+##### 必须自定义的函数（2个）
+
+- constructor(name, symbol,[baseURI])
+  - 定义自己的NFT名称和符号
+  - 通常要加上baseURI，如果你不固定，那么就要在mint函数中告知tokenURI
+- mint(to, tokenId[, tokenURI])
+  - 有内部的`_mint(to,tokenId)`用，但是可以前后加一点条件，比如收费，比如权限
+  - 经过继承`ERC721URIStorage`之后，会有`_setTokenURI(tokenId, tokenURI)`用，如果没有继承，那么就要好好想想怎么给token绑定tokenURI
+
+##### 通常要自定义的函数
+
+- 
 
 
 

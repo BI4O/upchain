@@ -270,3 +270,43 @@ contract TestLib {
 
 ## EIP/ERC
 
+- EIP：以太坊改进提案
+- ERC：以太坊应用标准
+
+### ERC20（同质化代币）
+
+- 定义：最常用的代币标准（interface接口）
+- 区别：与ETH是Coin不同，ERC20属于token
+- 现存清单：[目前所有ERC20](https://etherscan.io/tokens)
+- 内容：统一了函数名、名称、发行量、转账函数、转账事件，以便交易所集成
+  - string name表示名称、string symbol表示代表缩写、uint8 decimals表示小数位数、uint totalSupply表示发行量
+  - 用一个mapping(address => uint) balanceOf 表示所有人对这个token的余额
+  - 用一个mapping(address => mapping(address => uint)) allowance表示了A地址给各个地址的授权额度（授权额度可以大于余额）
+  - 函数transfer(address _to, uint _value)表示转账，需要本人才能用这个函数
+  - 函数transfer(address _from, address _to, uint _value)表示授权转账，是由授权人发起的对别的地址的转账
+  - 函数approve(address _spender, uint value)表示授权额度，需要由本人授权别人
+
+> [!note]
+>
+> > 问：deposit函数是{from 我，to bank}对吧？但是函数里的token.transfer又变成{from bank, to tokenAddr}，我时常搞不清，我以为同一个函数里的所有交易在calldata上面表示就都是from msg.sender也就是我，这不对吗？
+>
+> 答：外部交易 vs 内部消息调用
+>
+> - 外部交易
+>
+>   `Tx: { from: 你的EOA, to: Bank合约, data: deposit(_amount) }`
+>
+> - 进入 `deposit` 函数后，`msg.sender`＝你的EOA。
+>
+> - 然后你在 `deposit` 里写了 `token.transferFrom(msg.sender, address(this), _amount)`，这会触发一次对 ERC‑20 合约的**“内部调用”**：
+>
+>   `MessageCall: { from: Bank合约, to: Token合约, data: transferFrom(你的EOA, Bank合约, _amount) }`
+>
+> - 在这次内部调用里，`msg.sender`＝Bank合约，而不是你的EOA；ERC‑20 合约会检查 `allowance[你的EOA][Bank合约]`，然后把代币从你的EOA划给 Bank。
+
+---
+
+
+
+## OpenZepplin
+
