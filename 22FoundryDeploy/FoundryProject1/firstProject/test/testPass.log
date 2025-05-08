@@ -1,0 +1,10 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 3 tests for test/BankGetTop3.t.sol:BankTest
+[PASS] testFuzzFirst3Deposits(uint256) (runs: 256, μ: 127708, ~: 128371)
+[PASS] testGetTop3() (gas: 428923)
+[PASS] testWithdraw() (gas: 779792)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 24.37ms (19.33ms CPU time)
+
+Ran 1 test suite in 402.76ms (24.37ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
