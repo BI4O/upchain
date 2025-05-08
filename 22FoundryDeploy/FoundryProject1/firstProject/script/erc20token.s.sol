@@ -6,11 +6,15 @@ import {MyToken} from "../src/erc20token.sol";
 
 contract DeployMyToken is Script {
     function run() external {
+        // 查看用的什么参数
+        // console.log(vm.)
+
         // 读取私钥
-        uint256 deployer = vm.envUint("PRIVATE_KEY");
+        // uint256 deployer = vm.envUint("PRIVATE_KEY");
+        // console.log("deployer:",vm.addr(deployer));
 
         // 1. 开始广播
-        vm.startBroadcast(deployer);
+        vm.startBroadcast();
 
         // 2. 部署
         MyToken token = new MyToken("MyToken", "MTK");
