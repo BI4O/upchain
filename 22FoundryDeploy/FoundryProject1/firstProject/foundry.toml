@@ -4,15 +4,6 @@ out = "out"
 libs = ["lib"]
 solc_version = "0.8.25"
 
-[profile.local]
-# eth_rpc_url = "${LC_RPC_URL}"
-private_key = "${LC_PRIVATE_KEY}"
-
-[profile.sepolia]
-# eth_rpc_url = "${RPC_URL_REMOTE}"
-etherscan_api_key = "${SEP_ETHERSCAN_API}"
-private_key = "${SEP_PRIVATE_KEY}"
-
 [rpc_endpoints]
 local = "${LC_RPC_URL}"
 sepolia = "${RPC_URL_REMOTE}"
