@@ -1,0 +1,51 @@
+(base) bi4o@Macbi4o firstProject % forge test --match-contract MarketTest -vv
+[⠊] Compiling...
+[⠊] Compiling 1 files with Solc 0.8.25
+[⠒] Solc 0.8.25 finished in 960.09ms
+Compiler run successful!
+
+Ran 10 tests for test/NFTMarketBuyWithERC20.t.sol:MarketTest
+[PASS] testFuzz_buyOKWithRandomPriceAndRandomBuyer(uint256,uint256) (runs: 257, μ: 297577, ~: 298000)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] testFuzz_listFailedByNotOwner(uint256) (runs: 257, μ: 908590, ~: 908669)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] testFuzz_listFailedByZeroPrice(uint256) (runs: 257, μ: 941572, ~: 941656)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] testFuzz_listOKByseller(uint256,uint256) (runs: 257, μ: 913579, ~: 937589)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_buyFailedAlreadyOwn() (gas: 216771)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_buyFailedBalanceNotEnough() (gas: 258346)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_buyFailedNotExists() (gas: 273802)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_buyOKReturnExtraMoney() (gas: 293016)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_buyOKbyBuyer() (gas: 268971)
+Logs:
+  setUp: 3 contract deployed.
+
+[PASS] test_listOKByArtist() (gas: 183720)
+Logs:
+  setUp: 3 contract deployed.
+  artist list art succeed.
+
+Suite result: ok. 10 passed; 0 failed; 0 skipped; finished in 133.11ms (441.02ms CPU time)
+
+Ran 1 test suite in 379.57ms (133.11ms CPU time): 10 tests passed, 0 failed, 0 skipped (10 total tests)
