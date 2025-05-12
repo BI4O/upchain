@@ -1,0 +1,68 @@
+(base) bi4o@Macbi4o viemBankFont % pnpm tsx app/data/listenNftMarket.ts
+正在启动 NFTMarket 事件监听...
+开始监听 NFTMarket 合约事件...
+当前网络: 31337
+当前区块: 58n
+正在设置上架事件监听器...
+合约地址: 0x4826533b4897376654bb4d4ad88b7fafd0c98528
+正在设置售出事件监听器...
+合约代码存在，继续设置监听器...
+事件监听已启动，等待事件...
+收到上架事件日志: [
+  {
+    address: '0x4826533b4897376654bb4d4ad88b7fafd0c98528',
+    topics: [
+      '0x8cb0963b04034c4c13b179fd8bc2a3e07a88cd6b5dd0f6bee0db0bfa04d41441',
+      '0x000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+      '0x0000000000000000000000000000000000000000000000000000000000000003'
+    ],
+    data: '0x0000000000000000000000000000000000000000000000000000000000000064',
+    blockHash: '0xb804442fcdf5ea542e0468a37e1102b7aac256a6b23b834c125b6d39307c79be',
+    blockNumber: 59n,
+    blockTimestamp: '0x682141f0',
+    transactionHash: '0x68c751eda61cdd5cd99f7001e6c529a3f3f7bbde17847c6cdf5ccfc43e90658f',
+    transactionIndex: 0,
+    logIndex: 1,
+    removed: false,
+    args: {
+      seller: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+      _NftId: 3n,
+      price: 100n
+    },
+    eventName: 'NftListed'
+  }
+]
+🎨 NFT 上架事件: {
+  '卖家': '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+  'NFT编号': '3',
+  '价格': '100'
+}
+收到售出事件日志: [
+  {
+    address: '0x4826533b4897376654bb4d4ad88b7fafd0c98528',
+    topics: [
+      '0x9b9577bfad2e67a8df72aa8f54ee39ff58080e7c899e842302b6ec46d5199197',
+      '0x00000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c8',
+      '0x0000000000000000000000000000000000000000000000000000000000000003'
+    ],
+    data: '0x0000000000000000000000000000000000000000000000000000000000000064',
+    blockHash: '0x811a3c4ceafbca042be6d4b8ca18e171b1675f9193a164bf4de89b6f2b37d736',
+    blockNumber: 62n,
+    blockTimestamp: '0x68214322',
+    transactionHash: '0x19df10a37a28b166e7cbc6c0f3187e74896e1873dfaa079f2348194c40d413d0',
+    transactionIndex: 0,
+    logIndex: 2,
+    removed: false,
+    args: {
+      buyer: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+      _NftId: 3n,
+      price: 100n
+    },
+    eventName: 'NftSold'
+  }
+]
+💰 NFT 售出事件: {
+  '买家': '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+  'NFT编号': '3',
+  '价格': '100'
+}
