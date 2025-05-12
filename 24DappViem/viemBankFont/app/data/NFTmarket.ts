@@ -8,7 +8,8 @@ const client = createPublicClient({
   transport: webSocket('ws://127.0.0.1:50494')
 });
 
-// NFTMarket 合约地址
+// NFTMarket 合约地址，这个合约是需要在本地部署好之后获得的
+// 合约在：https://github.com/BI4O/upchain/blob/main/22FoundryDeploy/FoundryProject1/firstProject/src/NFTMarketBuyWithERC20.sol
 const NFTMarketAddress = '0x4826533b4897376654bb4d4ad88b7fafd0c98528';
 
 // 验证合约地址
