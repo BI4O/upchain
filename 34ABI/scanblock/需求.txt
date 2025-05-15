@@ -1,0 +1,44 @@
+我想要实现一个区块链event的查询网站
+
+使用viem代码如下
+import {createPublicClient, http, parseAbi} from "viem";
+import {foundry} from "viem/chains";
+
+const tokenAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+const transferEvent = parseAbi([
+    "event Transfer(address indexed from, address indexed to, uint256 value)",
+])
+
+// handler
+const client = createPublicClient({
+    chain: foundry,
+    transport: http("http://localhost:8545")
+});
+
+// 监听log
+const logs = await client.getLogs({
+    address: tokenAddr,
+    events: transferEvent,
+    fromBlock: 0n,
+    toBlock: 999n
+})
+
+for (const log of logs) {
+    console.log(log);
+}
+
+以上代码是查询区块链中的anvil网络中的所有的事件信息，我在后续会成称之为"扫块"
+
+我需要有一个轻量级的数据库，初始化的时候是通过扫块把目前的logs存进去。
+
+然后没隔5秒中，数据库的管理脚本会重新扫块一次，如果发现logs里面有新的信息（通过blockNumber来看），就把新的block的信息增加进数据库
+
+在app/page.tsx中，我需要有一个简单的界面，没隔1秒请求一次我的数据库（注意不是请求我的区块链而是数据库），把所有的logs都用可视化的方式展示出来
+
+实现一个/account/{address}的动态路由，使得通过提供账号地址，可以查到这个账号地址的所有相关的事件信息，用json格式返回就好，你用一个route.ts来实现
+
+实现wagmi在首页的登陆，如果不登陆就展示所有的事件信息，如果登陆了，就只能看到跟自己的账号地址相关的事件
+
+DATABASE_URL="file:./dev.db"
+NEXT_PUBLIC_ANVIL_RPC_URL="http://localhost:8545"
+NEXT_PUBLIC_CONTRACT_ADDRESS="0x5FbDB2315678afecb367f032d93F642f64180aa3"

@@ -19,3 +19,9 @@
 [submodule "32WalletWithAppkit/appkitProject/foundry/lib/openzeppelin-contracts"]
 	path = 32WalletWithAppkit/appkitProject/foundry/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "33SigAndPermit/signAndPermit/foundry/lib/forge-std"]
+	path = 33SigAndPermit/signAndPermit/foundry/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "33SigAndPermit/signAndPermit/foundry/lib/openzeppelin-contracts"]
+	path = 33SigAndPermit/signAndPermit/foundry/lib/openzeppelin-contracts
+	url = https://github.com/Openzeppelin/openzeppelin-contracts

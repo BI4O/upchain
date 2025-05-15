@@ -41,3 +41,62 @@
 
 `pnpm install viem`
 
+#### 选定网络
+
+```ts
+import {foundry,sepolis,mainnet} from 'viem/chains';
+```
+
+#### 创建对象
+
+```ts
+import {
+  createPublicClient, 
+  createWalletClient, 
+  http,
+	custom,
+} from 'viem';
+
+// 一、公共对象，用来调用区块链公共变量如blockNumber
+const publicClient = createPublicClient({
+  chain: foundry,
+  transport: http(),
+});
+
+// 二、钱包对象，用来跟合约交互，因为要有msg.sender
+const walletClient = createWalletClient({
+  chain: foundry,
+  transport: custom(window.ethereum),
+});
+```
+
+#### 合约交互
+
+```ts
+import {getContract} from 'viem';
+import COunter_ABI from 'path/to/counter.json'; // abi文件
+
+...
+const COUNTER_ADDRESS = "0x7148E9A2d539A99a66f1bd591E4E20cA35a08eD5";
+
+// 合约view，不需要account
+const counterContract = getContract({
+  address: COUNTER_ADDRESS,
+  abi: Counter_ABI,
+  client: publicClient,
+});
+
+const number = await counterContract.read.number();
+
+// 合约write，需要account也就是msg.sender
+const hash = await walletClient.writeContract({
+  address: COUNTER_ADDRESS,
+  abi: Counter_ABI,
+  functionName: 'increment',
+  account: address,
+});
+console.log('Transaction hash:', hash);
+```
+
+
+

@@ -1,0 +1,40 @@
+{
+  "name": "temp_project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:scan": "tsx src/scripts/start-app.ts",
+    "build": "next build",
+    "start": "next start",
+    "start:scan": "next start & tsx src/scripts/init-scanner.ts",
+    "lint": "next lint",
+    "scan": "tsx src/scripts/init-scanner.ts",
+    "test-scan": "tsx src/scripts/test-scanner.tsx",
+    "mock-data": "tsx src/scripts/create-mock-data.tsx",
+    "generate-transfers": "tsx src/scripts/generate-transfers.tsx",
+    "check-token": "tsx src/scripts/check-token-info.tsx"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.0",
+    "@tanstack/react-query": "^5.76.1",
+    "next": "15.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "viem": "^2.29.3",
+    "wagmi": "^2.15.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.2",
+    "prisma": "^6.8.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.19.4",
+    "typescript": "^5"
+  }
+}

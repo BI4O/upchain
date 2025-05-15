@@ -1,0 +1,27 @@
+{
+	"name": "listenBlockChain",
+	"version": "1.0.0",
+	"description": "区块链数据监听和存储",
+	"type": "module",
+	"scripts": {
+		"start": "tsx blockScanAndSave.ts",
+		"listen": "tsx subcription.ts",
+		"server": "tsx blockScanServerRestful.ts"
+	},
+	"dependencies": {
+		"@tanstack/react-query": "^5.76.1",
+		"@types/node": "^22.15.18",
+		"@wagmi/core": "^2.17.2",
+		"cors": "^2.8.5",
+		"express": "^5.1.0",
+		"lowdb": "^7.0.1",
+		"viem": "^2.29.3",
+		"wagmi": "^2.15.3"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.18",
+		"@types/express": "^5.0.1",
+		"tsx": "^4.19.4",
+		"typescript": "^5.8.3"
+	}
+}

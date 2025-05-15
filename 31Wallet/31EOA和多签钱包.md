@@ -136,21 +136,103 @@ verifyMpcSignature([share1, share3], message, signature);    // true ✅
 
 - 广播、节点验证、上链
 
-## 用Viem模拟
+## 多签钱包实践一（常用）
 
-1. 创建一个账号（随机助记词）
-   1. 用viem在sepolia中检查钱包余额
-   2. 给钱包里面转一点eth
-2. 构造交易对象（erc20token转账的EIP1559交易）
-   1. {to, data, value, gas, nonce}
-3. 用新账号对交易签名
-4. 发送到sepolia测试网确认
+### https://app.safe.global/
 
-```js
-import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
-import { createPublicClient, http } from 'viem'
-import { mainnet } from 'viem/chains'
+一个比较好的轮子，实现了多签钱包的实现，可以创建一个多签钱包（本质是一个合约）
 
-// 助记词生成
+- 可以新建一个钱包，并添加owner，然后设置这个多签钱包（合约）的所有tx都需要比如三个人中的两个人来签名，才可以交易
+- 钱包创建好之后可以发起tx，从钱包中转取出钱也是一个比较常见的tx，需要比如说2/3的来签名，然后才可以执行
+- 这个钱包还可以当成是一个msg.sender去和别的合约交互，同样的，所有的交互都是需要比如说2/3的签名，才可以执行。
+  - 需要声明要交互的合约的地址，ABI，以及要交互的函数签名
+
+## 多签钱包实践二（自己写）
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+
+contract MutiSigWalletSimple {
+    address[] public owners;   // 签名者
+    mapping(address => bool) public isOwner;  // 是否签名者
+    uint public required = 2;  // 通过票数
+
+    // 交易
+    struct Tx {
+        address to;
+        uint value;
+        bytes data;
+        bool executed;
+        uint confirmations; //  同意的数量
+    }
+
+    // 根据id找到交易对象
+    Tx[] public txLine; // 交易队列
+    // 提议id
+    uint public _nextTxId = 0; 
+    // 根据id找到owner是否已经批准
+    mapping(uint => mapping(address => bool)) public isApproved; //
+
+    constructor(address _o1, address _o2, address _o3) {
+        // register all owners
+        owners = [_o1, _o2, _o3];
+        required = 2;
+        // set owner idendifier
+        for (uint256 index = 0; index < owners.length; index++) {
+            isOwner[owners[index]] = true;
+        }
+    }
+
+    receive() external payable {}
+
+    // 提交提案
+    function submitTx(address _to, uint _value, bytes calldata _data) external {
+        // 必须是owners之一才可以发起
+        require(isOwner[msg.sender], "Must submit by one of owners!");
+        // 加入提议
+        txLine.push(
+            Tx({
+                to: _to,
+                value: _value,
+                data: _data,
+                executed: false,
+                confirmations: 0
+            })
+        );  
+        // 记录提议者对提案的准许
+        txLine[_nextTxId].confirmations += 1;
+        isApproved[_nextTxId][msg.sender] = true;
+        // 第一个tx是0，后面是逐步递增，刚好根据id获取
+        _nextTxId += 1;
+    }
+
+    // 同意提案
+    function approveTx(uint _txId) public {
+        require(_txId < _nextTxId, "Tx not exists!");
+        require(isOwner[msg.sender], "You are not one of owners");
+        require(isApproved[_txId][msg.sender] == false, "You already approved this tx");
+
+        // 记录谁准许了
+        isApproved[_txId][msg.sender] = true;
+        // 记录提案准许+1
+        txLine[_txId].confirmations += 1;
+    }
+
+    // 执行提案
+    function executeTx(uint _txId) public {
+        // 所有人都可以执行
+        require(_txId < _nextTxId, "Tx not exists!");
+        Tx storage etx = txLine[_txId];
+        require(etx.confirmations >= required, "Tx not enough comfirmations!");
+        require(etx.executed != true, "Tx already excuted!");
+
+        // 正式执行
+        (bool ok,) = etx.to.call{value: etx.value}(etx.data);
+        require(ok, "Tx failed when excuted!");
+        etx.executed = true;
+    }
+}
 ```
 

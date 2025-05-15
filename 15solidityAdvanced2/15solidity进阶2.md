@@ -171,7 +171,7 @@ function lowCallCount(address c) public {
 ```solidity
 // 我要远程调用合约A，但是还不知道它怎么实现
 function callWithPlayload(address contractAddr, bytes memory playload) public returns(bool) {
-	(bool success,)contractAddr.call(playload);
+	(bool success,) = contractAddr.call(playload);
 	return success;
 }
 ```
