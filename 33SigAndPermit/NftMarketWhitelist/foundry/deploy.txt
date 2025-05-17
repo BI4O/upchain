@@ -9,37 +9,5 @@ forge script script/market.s.sol:MarketDeployScript --rpc-url http://localhost:8
   Signer Address:  0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
   Signer privatekey: 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a
 
-
-==========================
-
-Chain 31337
-
-Estimated gas price: 2.000000001 gwei
-
-Estimated total gas used for script: 5836934
-
-Estimated amount required: 0.011673868005836934 ETH
-
-==========================
-
-##### anvil-hardhat
-✅  [Success] Hash: 0xc56c9b57747dcb9ae482f0e7ea2af76b9f0c9216fae0df458048ad23797101db
-Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-Block: 1
-Paid: 0.000979549000979549 ETH (979549 gas * 1.000000001 gwei)
-
-
-##### anvil-hardhat
-✅  [Success] Hash: 0x5eae2cb8ec3b31904db5a4750fd3147bf6ad07f41b433c5fd8fcad6db12e9f8b
-Contract Address: 0x5FbDB2315678afecb367f032d93F642f64180aa3
-Block: 1
-Paid: 0.001809366001809366 ETH (1809366 gas * 1.000000001 gwei)
-
-
-##### anvil-hardhat
-✅  [Success] Hash: 0x35c12243eb35a26bfb0b9a6737e1a768448a5cfcc0bdfcb6d5fc8919cff3058e
-Contract Address: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
-Block: 1
-Paid: 0.001701036001701036 ETH (1701036 gas * 1.000000001 gwei)
-
-✅ Sequence #1 on anvil-hardhat | Total Paid: 0.004489951004489951 ETH (4489951 gas * avg 1.000000001 gwei)
+//
+用signer的私钥签名过buyer得到的签名，buyer可以拿着这个签名去跟Market的permitBuy交互，实现购买
