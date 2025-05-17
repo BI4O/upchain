@@ -9,7 +9,7 @@ import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/Mes
 import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
 // 定义一个合约testVerify
-contract testVerify {
+contract EIP191 {
     // recover函数用于从签名中恢复出签名者的地址
     // 生活中的例子：就像从一封信的签名中识别出是谁写的信
     function recover(bytes memory message, bytes memory signature) public pure
