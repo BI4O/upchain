@@ -1,0 +1,6 @@
+{
+    "wake.compiler.solc.remappings": [
+        "@std=lib/forge-std/src/ ",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+    ]
+}

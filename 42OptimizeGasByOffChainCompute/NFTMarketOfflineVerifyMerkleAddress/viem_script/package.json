@@ -1,0 +1,9 @@
+{
+	"dependencies": {
+		"merkletreejs": "^0.5.2",
+		"viem": "^2.30.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.19"
+	}
+}

@@ -1,0 +1,13 @@
+forge test -vv --match-contract "MemeFactorySpecificTest"
+[⠊] Compiling...
+[⠃] Compiling 1 files with Solc 0.8.25
+[⠊] Solc 0.8.25 finished in 830.63ms
+Compiler run successful!
+
+Ran 3 tests for test/MemeFactorySpecific.t.sol:MemeFactorySpecificTest
+[PASS] testFeeDistribution() (gas: 531070)
+[PASS] testMintingLimits() (gas: 591799)
+[PASS] testPerMintParameter() (gas: 784908)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 10.02ms (5.32ms CPU time)
+
+Ran 1 test suite in 216.18ms (10.02ms CPU time): 3 tests passed,

@@ -1,0 +1,15 @@
+{
+  "name": "Donald Trump Avatar",
+  "description": "A stylized avatar of Donald J. Trump, the 45th President of the United States.",
+  "image": "https://ipfs.io/ipfs/bafybeida6sphgpn5vatdsgdupjc6mf5eoz2crfcwagaxrjd4jdpkze7tjm/trump.png",
+  "attributes": [
+    {
+      "trait_type": "Person",
+      "value": "Donald J. Trump"
+    },
+    {
+      "trait_type": "Style",
+      "value": "Avatar"
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+  
+  /* 基础文字大小 */
+  html {
+    font-size: 14px;
+  }
+}
+
+@layer components {
+  /* 基础卡片样式 */
+  .card-base {
+    @apply backdrop-blur-md bg-white/5 border border-white/10
+           transform transition-all duration-300
+           rounded-xl p-6
+           shadow-[0_8px_32px_rgba(0,0,0,0.24)]
+           hover:shadow-[0_16px_48px_rgba(255,255,255,0.12)]
+           hover:border-white/20
+           h-full;
+  }
+
+  /* Token和NFT卡片样式 */
+  .token-card {
+    @apply card-base;
+  }
+
+  /* NFT市场卡片样式 */
+  .market-card {
+    @apply card-base;
+  }
+
+  /* Token和NFT卡片标题 */
+  .token-card-title {
+    @apply text-lg font-bold mb-5 text-white;
+  }
+
+  /* 市场卡片标题 */
+  .market-card-title {
+    @apply text-lg font-bold mb-5 text-white;
+  }
+
+  /* Token和NFT卡片文本 */
+  .token-card-text {
+    @apply text-sm text-gray-300;
+  }
+
+  /* 市场卡片文本 */
+  .market-card-text {
+    @apply text-base text-white;
+  }
+
+  /* Token和NFT卡片输入框 */
+  .token-input {
+    @apply px-3 py-1.5 bg-black/20 border border-white/10 rounded-lg 
+           text-sm text-white placeholder-gray-400 
+           focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent
+           transition-all duration-200
+           w-full;
+  }
+
+  /* 市场卡片输入框 */
+  .market-input {
+    @apply px-4 py-2 bg-black/20 border border-white/10 rounded-lg 
+           text-base text-white placeholder-gray-400 
+           focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent
+           transition-all duration-200
+           w-full;
+  }
+
+  /* Token和NFT卡片按钮 */
+  .token-btn {
+    @apply px-3 py-1.5 rounded-lg font-medium text-sm
+           transition-all duration-300 transform hover:scale-105 
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+
+  /* 市场卡片按钮 */
+  .market-btn {
+    @apply px-6 py-2 rounded-lg font-medium text-base
+           transition-all duration-300 transform hover:scale-105 
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+
+  /* 渐变文字 */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+
+  .gradient-text-blue {
+    @apply gradient-text from-blue-400 to-cyan-300 font-bold;
+  }
+
+  .gradient-text-purple {
+    @apply gradient-text from-purple-400 to-pink-300 font-bold;
+  }
+
+  /* Token和NFT卡片内凹容器 */
+  .token-inset-panel {
+    @apply bg-black/30 rounded-lg p-5 
+           shadow-inner border border-white/5 
+           backdrop-blur-sm
+           mb-5;
+  }
+
+  /* 市场卡片内凹容器 */
+  .market-inset-panel {
+    @apply bg-black/30 rounded-lg p-5 
+           shadow-inner border border-white/5 
+           backdrop-blur-sm
+           mb-5;
+  }
+
+  /* 表格样式 */
+  .dark-table {
+    @apply w-full text-left border-collapse;
+  }
+
+  .dark-table thead tr {
+    @apply border-b border-white/10 sticky top-0 bg-black/50 backdrop-blur-sm z-10;
+  }
+
+  .dark-table th {
+    @apply px-4 py-3 text-sm font-medium text-gray-300 uppercase tracking-wider;
+  }
+
+  .dark-table tbody {
+    @apply divide-y divide-white/10;
+  }
+
+  .dark-table tbody tr {
+    @apply hover:bg-white/5 transition-colors duration-200;
+  }
+
+  .dark-table td {
+    @apply px-4 py-3 text-white;
+  }
+
+  /* 滚动容器 */
+  .scroll-container {
+    @apply max-h-[500px] overflow-y-auto custom-scrollbar;
+  }
+
+  /* 标签 */
+  .tag {
+    @apply px-2 py-1 rounded-md text-xs font-medium;
+  }
+
+  .tag-blue {
+    @apply bg-blue-500/20 text-blue-300 border border-blue-500/30;
+  }
+
+  .tag-purple {
+    @apply bg-purple-500/20 text-purple-300 border border-purple-500/30;
+  }
+
+  .tag-green {
+    @apply bg-green-500/20 text-green-300 border border-green-500/30;
+  }
+
+  /* Token和NFT卡片信息文本 */
+  .token-info-text {
+    @apply text-xs text-gray-400;
+  }
+
+  /* 市场卡片信息文本 */
+  .market-info-text {
+    @apply text-sm text-gray-300;
+  }
+
+  /* Token和NFT卡片数值文本 */
+  .token-value-text {
+    @apply text-sm font-medium text-white;
+  }
+
+  /* 市场卡片数值文本 */
+  .market-value-text {
+    @apply text-base font-medium text-white;
+  }
+
+  /* Token和NFT卡片标签文本 */
+  .token-label-text {
+    @apply text-xs text-gray-400 mb-1;
+  }
+
+  /* 市场卡片标签文本 */
+  .market-label-text {
+    @apply text-sm text-gray-400 mb-2;
+  }
+}
+
+/* 自定义滚动条样式 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 只在悬停时显示滚动条 */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.custom-scrollbar:not(:hover)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 动画效果 */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
