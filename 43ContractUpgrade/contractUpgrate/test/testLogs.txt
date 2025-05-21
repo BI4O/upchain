@@ -1,0 +1,25 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 2 tests for test/Counter.t.sol:CounterTest
+[PASS] testInitialImplementation() (gas: 50901)
+[PASS] testUpgrade() (gas: 277463)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 7.69ms (1.98ms CPU time)
+
+Ran 4 tests for test/NFT.t.sol:NFTTest
+[PASS] testInitialization() (gas: 32124)
+[PASS] testMint() (gas: 75066)
+[PASS] testMintFailsForNonOwner() (gas: 19650)
+[PASS] testMultipleMints() (gas: 187771)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.23ms (3.54ms CPU time)
+
+Ran 6 tests for test/NFTMarket.t.sol:NFTMarketTest
+[PASS] testMarketV1ListAndBuy() (gas: 193103)
+[PASS] testMarketV1ListFailWithoutApprove() (gas: 38689)
+[PASS] testMarketV2PermitListAndBuy() (gas: 207500)
+[PASS] testMarketV2PermitListFailWithWrongSig() (gas: 32900)
+[PASS] testMarketV2PermitListFailWithoutApproval() (gas: 51064)
+[PASS] testUpgradeFromV1ToV2() (gas: 213838)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 9.25ms (5.53ms CPU time)
+
+Ran 3 test suites in 202.70ms (26.16ms CPU time): 12 tests passed, 0 failed, 0 skipped (12 total tests)

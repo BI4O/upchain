@@ -1,0 +1,47 @@
+
+== Logs ==
+  MarketV2 logic deployed at: 0x3d321AC4c4A2B1471c522cfA6Cc35CD759571573
+  Market proxy upgraded to V2
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 0.004023166 gwei
+
+Estimated total gas used for script: 3102208
+
+Estimated amount required: 0.000012480697750528 ETH
+
+==========================
+
+##### sepolia
+✅  [Success] Hash: 0x67d869f2806151d74e5e76eb6fede90d148a633954d4bc6c1990baa8854975bc
+Block: 8375244
+Paid: 0.000000094874745342 ETH (38597 gas * 0.002458086 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0x8514782ff6e31a05ff0d3055c650f50baae1e9a49b158068e8e516e9e72a35ce
+Contract Address: 0x3d321AC4c4A2B1471c522cfA6Cc35CD759571573
+Block: 8375244
+Paid: 0.000005764963844316 ETH (2345306 gas * 0.002458086 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.000005859838589658 ETH (2383903 gas * avg 0.002458086 gwei)
+                                                                                         
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (1) contracts
+Start verifying contract `0x3d321AC4c4A2B1471c522cfA6Cc35CD759571573` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [NFTMarket_V2] "0x3d321AC4c4A2B1471c522cfA6Cc35CD759571573".
+Contract successfully verified
+All (1) contracts were verified!
