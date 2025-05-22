@@ -1,458 +1,272 @@
 "use client";
+import { useState, useEffect } from "react";
+import { useAccount, useConnect, useDisconnect, usePublicClient, useWalletClient, useBlockNumber } from "wagmi";
+import { injected } from "@wagmi/connectors";
+import { parseEther, formatEther } from "viem";
+import MyTokenABI from "../abis/MyToken.json";
+import TokenBankABI from "../abis/tokenBank.json";
+import Permit2ABI from "../abis/Permit2.json";
 
-import { useState, useEffect } from 'react';
-import { publicActions, http, createWalletClient, parseEther, getContract, formatEther, Hex, Address } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
-import { foundry } from 'viem/chains';
-import MyTokenABI from '../abis/MyToken.json';
-import TokenBankABI from '../abis/tokenBank.json';
+// 合约地址
+const MYTOKEN_ADDR = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const BANK_ADDR = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const PERMIT2_ADDR = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export default function Home() {
-  // 状态变量
-  const [account, setAccount] = useState<string>('');
-  const [tokenBalance, setTokenBalance] = useState<string>('0');
-  const [bankBalance, setBankBalance] = useState<string>('0');
-  const [transferAmount, setTransferAmount] = useState<string>('0');
-  const [depositAmount, setDepositAmount] = useState<string>('0');
-  const [permitAmount, setPermitAmount] = useState<string>('0');
-  const [recipient, setRecipient] = useState<string>('0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9');
-  const [status, setStatus] = useState<string>('');
-  const [txHash, setTxHash] = useState<string>('');
-  const [client, setClient] = useState<any>(null);
-  const [token, setToken] = useState<any>(null);
-  const [bank, setBank] = useState<any>(null);
-  const [approvedAmount, setApprovedAmount] = useState<string>('0');
+  // hooks始终调用
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  // 合约地址
-  const tokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3" as Address;
-  const bankAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9" as Address;
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
+  const { data: blockNumber } = useBlockNumber({ watch: true });
 
-  // 初始化
+  const [tokenBalance, setTokenBalance] = useState("0");
+  const [bankBalance, setBankBalance] = useState("0");
+  const [depositAmount, setDepositAmount] = useState("");
+  const [txHash, setTxHash] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // 查询余额
+  async function fetchBalances() {
+    if (!address || !publicClient) return;
+    // MyToken余额
+    const bal = await publicClient.readContract({
+      address: MYTOKEN_ADDR,
+      abi: MyTokenABI,
+      functionName: "balanceOf",
+      args: [address],
+    });
+    setTokenBalance(bal ? formatEther(BigInt(bal as any)) : "0");
+    // 银行余额
+    const bankBal = await publicClient.readContract({
+      address: BANK_ADDR,
+      abi: TokenBankABI,
+      functionName: "balanceOf",
+      args: [address],
+    });
+    setBankBalance(bankBal ? formatEther(BigInt(bankBal as any)) : "0");
+  }
+
   useEffect(() => {
-    async function initialize() {
+    if (isConnected) fetchBalances();
+    // eslint-disable-next-line
+  }, [isConnected, address, txHash, blockNumber]);
+
+  // 自动授权Permit2最大额度
+  useEffect(() => {
+    async function autoApprovePermit2() {
+      if (!walletClient || !address || !publicClient) return;
       try {
-        // 账户
-        const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-        const account = privateKeyToAccount(privateKey);
-        setAccount(account.address);
-
-        // 创建钱包客户端
-        const newClient = createWalletClient({
-          chain: foundry,
-          transport: http("http://localhost:8545")
-        }).extend(publicActions);
-        setClient(newClient);
-
-        // 初始化合约实例
-        const tokenContract = getContract({
-          address: tokenAddress,
+        const allowance = await publicClient.readContract({
+          address: MYTOKEN_ADDR,
           abi: MyTokenABI,
-          client: newClient,
+          functionName: "allowance",
+          args: [address, PERMIT2_ADDR],
         });
-        setToken(tokenContract);
-
-        const bankContract = getContract({
-          address: bankAddress,
-          abi: TokenBankABI,
-          client: newClient,
-        });
-        setBank(bankContract);
-
-        // 获取初始余额
-        await updateBalances(tokenContract, bankContract, account.address);
-      } catch (error) {
-        console.error("初始化错误:", error);
-        setStatus("初始化失败，请确保连接到本地区块链");
+        const max = BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        if (BigInt(allowance as string) < max) {
+          await walletClient.writeContract({
+            address: MYTOKEN_ADDR,
+            abi: MyTokenABI,
+            functionName: "approve",
+            args: [PERMIT2_ADDR, max],
+            account: address,
+          });
+        }
+      } catch (e) {
+        // 忽略授权失败
       }
     }
+    if (isConnected && mounted) autoApprovePermit2();
+  }, [isConnected, address, walletClient, publicClient, mounted]);
 
-    initialize();
-  }, []);
-
-  // 更新余额的函数
-  async function updateBalances(tokenContract: any, bankContract: any, accountAddress: string) {
+  // 传统approve+deposit
+  async function handleApproveAndDeposit() {
+    setError("");
+    setLoading(true);
     try {
-      if (!tokenContract || !bankContract) return;
-
-      const tokenBal = await tokenContract.read.balanceOf([accountAddress]);
-      const bankBal = await bankContract.read.balanceOf([accountAddress]);
-      
-      setTokenBalance(formatEther(tokenBal));
-      setBankBalance(formatEther(bankBal));
-    } catch (error) {
-      console.error("获取余额错误:", error);
-      setStatus("获取余额失败");
-    }
-  }
-
-  // 转账功能
-  async function handleTransfer() {
-    try {
-      setStatus("转账处理中...");
-      if (!token || !client || !account) {
-        setStatus("合约实例未初始化");
-        return;
-      }
-
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-      const acc = privateKeyToAccount(privateKey);
-
-      const amount = parseEther(transferAmount);
-      const transferTx = await token.write.transfer([
-        recipient,
-        amount
-      ], {
-        account: acc
-      });
-
-      setTxHash(transferTx);
-      setStatus(`转账成功! 交易哈希: ${transferTx}`);
-      await updateBalances(token, bank, account);
-    } catch (error) {
-      console.error("转账错误:", error);
-      setStatus("转账失败");
-    }
-  }
-
-  // 授权功能
-  async function handleApprove() {
-    try {
-      setStatus("授权处理中...");
-      if (!token || !client || !account) {
-        setStatus("合约实例未初始化");
-        return;
-      }
-
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-      const acc = privateKeyToAccount(privateKey);
+      if (!walletClient || !address) throw new Error("请先连接钱包");
       const amount = parseEther(depositAmount);
-
-      // 授权
-      setStatus("授权Bank合约使用代币...");
-      const approveTx = await token.write.approve([
-        bankAddress,
-        amount
-      ], {
-        account: acc
+      // 1. approve
+      const approveHash = await walletClient.writeContract({
+        address: MYTOKEN_ADDR,
+        abi: MyTokenABI,
+        functionName: "approve",
+        args: [BANK_ADDR, amount],
+        account: address,
       });
-      setTxHash(approveTx);
-      setStatus(`授权成功! 交易哈希: ${approveTx}`);
-      setApprovedAmount(depositAmount);
-      
-      // 检查授权额度
-      const allowance = await token.read.allowance([account, bankAddress]);
-      setStatus(`授权成功! 授权额度: ${formatEther(allowance)}`);
-    } catch (error) {
-      console.error("授权错误:", error);
-      setStatus("授权失败");
+      // 等待approve上链
+      if (publicClient) await publicClient.waitForTransactionReceipt({ hash: approveHash });
+      // 2. deposit
+      const depositHash = await walletClient.writeContract({
+        address: BANK_ADDR,
+        abi: TokenBankABI,
+        functionName: "deposit",
+        args: [amount],
+        account: address,
+      });
+      setTxHash(depositHash);
+    } catch (e: any) {
+      setError(e.message || "交易失败");
     }
+    setLoading(false);
   }
 
-  // 存款功能
-  async function handleDeposit() {
+  // permit2存钱
+  async function handlePermit2Deposit() {
+    setError("");
+    setLoading(true);
     try {
-      setStatus("存款处理中...");
-      if (!bank || !client || !account) {
-        setStatus("合约实例未初始化");
-        return;
-      }
-
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-      const acc = privateKeyToAccount(privateKey);
+      if (!walletClient || !address) throw new Error("请先连接钱包");
       const amount = parseEther(depositAmount);
-
-      // 检查授权额度
-      const allowance = await token.read.allowance([account, bankAddress]);
-      if (allowance < amount) {
-        setStatus(`授权额度不足! 当前授权: ${formatEther(allowance)}, 需要: ${depositAmount}`);
-        return;
-      }
-
-      // 存款
-      const depositTx = await bank.write.deposit([amount], {
-        account: acc
+      // 1. 先approve给Permit2
+      const approveHash = await walletClient.writeContract({
+        address: MYTOKEN_ADDR,
+        abi: MyTokenABI,
+        functionName: "approve",
+        args: [PERMIT2_ADDR, amount],
+        account: address,
       });
-      setTxHash(depositTx);
-      setStatus(`存款成功! 交易哈希: ${depositTx}`);
-      
-      await updateBalances(token, bank, account);
-    } catch (error) {
-      console.error("存款错误:", error);
-      setStatus("存款失败");
-    }
-  }
-
-  // Permit存款功能
-  async function handlePermitDeposit() {
-    try {
-      setStatus("Permit存款处理中...");
-      if (!token || !bank || !client || !account) {
-        setStatus("合约实例未初始化");
-        return;
-      }
-
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-      const acc = privateKeyToAccount(privateKey);
-      const amount = parseEther(permitAmount);
-
-      // 获取nonce
-      const nonce = await token.read.nonces([account]);
-      setStatus(`获取nonce: ${nonce}`);
-
-      // 获取chainId
-      const chainId = await client.getChainId();
-      
-      // 获取代币名称
-      const tokenName = await token.read.name() as string;
-      
-      // 设置deadline (1小时后过期)
-      const deadline = BigInt(Math.floor(Date.now() / 1000) + 3600);
-      
-      // Permit消息
-      const domain = {
-        name: tokenName,
-        version: '1',
-        chainId: chainId,
-        verifyingContract: tokenAddress
-      };
-      
+      if (publicClient) await publicClient.waitForTransactionReceipt({ hash: approveHash });
+      // 2. 构造permit2 EIP-712数据
+      const deadline = Math.floor(Date.now() / 1000) + 3600; // 1小时后过期
+      const nonce = 0; // 简化演示，实际应查询permit2 nonce
       const types = {
-        Permit: [
-          { name: 'owner', type: 'address' },
-          { name: 'spender', type: 'address' },
-          { name: 'value', type: 'uint256' },
-          { name: 'nonce', type: 'uint256' },
-          { name: 'deadline', type: 'uint256' }
-        ]
+        PermitTransferFrom: [
+          { name: "permitted", type: "TokenPermissions" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint256" },
+        ],
+        TokenPermissions: [
+          { name: "token", type: "address" },
+          { name: "amount", type: "uint256" },
+        ],
       };
-      
-      const message = {
-        owner: account,
-        spender: bankAddress,
-        value: amount,
+      const value = {
+        permitted: {
+          token: MYTOKEN_ADDR,
+          amount: amount,
+        },
         nonce: nonce,
-        deadline: deadline
+        deadline: deadline,
       };
-      
-      setStatus("正在签名Permit消息...");
-      
-      // 签名permit消息
-      const signature = await client.signTypedData({
-        account: acc,
-        domain: domain,
-        types: types,
-        primaryType: 'Permit',
-        message: message
+      // 3. 让用户用钱包签名EIP-712
+      const signature = await walletClient.signTypedData({
+        domain: {
+          name: "Permit2",
+          chainId: await walletClient.getChainId(),
+          verifyingContract: PERMIT2_ADDR,
+        },
+        types,
+        primaryType: "PermitTransferFrom",
+        message: value,
+        account: address,
       });
-      
-      // 从签名中提取v, r, s
-      const r = `0x${signature.substring(2, 66)}` as Hex;
-      const s = `0x${signature.substring(66, 130)}` as Hex;
-      const v = parseInt(signature.substring(130, 132), 16);
-      
-      setStatus("正在使用PermitDeposit...");
-      
-      // 使用depositWithPermit方法
-      const depositWithPermitTx = await bank.write.depositWithPermit([
-        account,
-        amount,
-        deadline,
-        v,
-        r,
-        s
-      ], {
-        account: acc
+      // 4. 调用depositWithPermit2
+      const depositHash = await walletClient.writeContract({
+        address: BANK_ADDR,
+        abi: TokenBankABI,
+        functionName: "depositWithPermit2",
+        args: [address, amount, deadline, signature],
+        account: address,
       });
-      
-      setTxHash(depositWithPermitTx);
-      setStatus(`Permit存款成功! 交易哈希: ${depositWithPermitTx}`);
-      
-      await updateBalances(token, bank, account);
-    } catch (error) {
-      console.error("Permit存款错误:", error);
-      setStatus("Permit存款失败");
+      setTxHash(depositHash);
+    } catch (e: any) {
+      setError(e.message || JSON.stringify(e) || "交易失败");
+      console.error("permit2 error", e);
     }
+    setLoading(false);
   }
 
-  // 提款功能
+  // 提现
   async function handleWithdraw() {
+    setError("");
+    setLoading(true);
     try {
-      setStatus("提款处理中...");
-      if (!bank || !client || !account) {
-        setStatus("合约实例未初始化");
-        return;
-      }
-
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-      const acc = privateKeyToAccount(privateKey);
-
-      const withdrawTx = await bank.write.withdraw([], {
-        account: acc
+      if (!walletClient || !address) throw new Error("请先连接钱包");
+      if (Number(bankBalance) === 0) throw new Error("银行余额为0，无法提现");
+      const hash = await walletClient.writeContract({
+        address: BANK_ADDR,
+        abi: TokenBankABI,
+        functionName: "withdraw",
+        args: [],
+        account: address,
       });
-      
-      setTxHash(withdrawTx);
-      setStatus(`提款成功! 交易哈希: ${withdrawTx}`);
-      
-      await updateBalances(token, bank, account);
-    } catch (error) {
-      console.error("提款错误:", error);
-      setStatus("提款失败");
+      setTxHash(hash);
+    } catch (e: any) {
+      setError(e.message || "提现失败");
     }
+    setLoading(false);
   }
 
-  // 手动刷新余额
-  async function refreshBalances() {
-    if (token && bank && account) {
-      setStatus("刷新余额中...");
-      await updateBalances(token, bank, account);
-      setStatus("余额已刷新");
-    }
+  // 只在mounted后渲染主要内容
+  if (!mounted) {
+    return <main />;
   }
 
   return (
-    <main className="flex min-h-screen p-4 bg-gray-100">
-      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4">
-        {/* 左侧区域：账户信息和状态 */}
-        <div className="md:col-span-2 flex flex-col gap-4">
-          {/* 标题 */}
-          <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">EIP2612 Permit 演示</h1>
-          
-          {/* 账户信息部分 - 固定位置显示 */}
-          <div className="sticky top-4 bg-blue-50 p-3 rounded-md shadow">
-            <h2 className="text-lg font-semibold mb-2 text-gray-800">账户信息</h2>
-            <div className="mb-2 text-gray-800 text-sm overflow-hidden text-ellipsis"><strong>地址:</strong> {account}</div>
-            <div className="mb-2 text-gray-800 text-xl"><strong>代币余额:</strong> {tokenBalance} MTK</div>
-            <div className="mb-2 text-gray-800 text-xl"><strong>银行存款:</strong> {bankBalance} MTK</div>
-            <button 
-              onClick={refreshBalances}
-              className="mt-1 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium text-sm active:transform active:scale-95 active:bg-blue-800 transition-all duration-150"
+    <main className="max-w-xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-4">Ptoken 银行演示</h1>
+      {!isConnected ? (
+        <button onClick={() => connect({ connector: injected() })} className="px-4 py-2 bg-blue-600 text-white rounded">连接MetaMask</button>
+      ) : (
+        <div className="mb-4">
+          <div className="mb-2">钱包地址: <span className="font-mono">{address}</span></div>
+          <div className="mb-2">Ptoken余额: {tokenBalance}</div>
+          <div className="mb-2">银行余额: {bankBalance}</div>
+          <button onClick={() => disconnect()} className="px-2 py-1 bg-gray-300 rounded">断开连接</button>
+        </div>
+      )}
+      {isConnected && (
+        <>
+          <div className="mb-4">
+            <input
+              type="number"
+              min="0"
+              placeholder="存款数量"
+              value={depositAmount}
+              onChange={e => setDepositAmount(e.target.value)}
+              className="border px-2 py-1 rounded mr-2"
+            />
+            <button
+              onClick={handleApproveAndDeposit}
+              disabled={loading || !depositAmount}
+              className="px-3 py-1 bg-green-600 text-white rounded mr-2"
             >
-              刷新余额
+              传统approve+deposit
+            </button>
+            <button
+              onClick={handlePermit2Deposit}
+              disabled={loading || !depositAmount}
+              className="px-3 py-1 bg-purple-600 text-white rounded"
+            >
+              permit2一键存款
             </button>
           </div>
-          
-          {/* 转账部分 */}
-          <div className="bg-white p-3 rounded-md shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-gray-800">转账代币</h2>
-            <div className="flex flex-col gap-2">
-              <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">接收地址</label>
-                <input 
-                  type="text" 
-                  value={recipient} 
-                  onChange={(e) => setRecipient(e.target.value)}
-                  className="w-full p-1.5 border rounded text-gray-800 text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">金额</label>
-                <input 
-                  type="text" 
-                  value={transferAmount} 
-                  onChange={(e) => setTransferAmount(e.target.value)}
-                  className="w-full p-1.5 border rounded text-gray-800 text-sm"
-                />
-              </div>
-              <button 
-                onClick={handleTransfer}
-                className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 font-medium active:transform active:scale-95 active:bg-green-800 transition-all duration-150"
-              >
-                转账
-              </button>
-            </div>
-          </div>
-          
-          {/* 提款部分 */}
-          <div className="bg-white p-3 rounded-md shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-gray-800">从银行提款</h2>
-            <button 
+          <div className="mb-4">
+            <button
               onClick={handleWithdraw}
-              className="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 font-medium w-full active:transform active:scale-95 active:bg-red-800 transition-all duration-150"
+              disabled={loading}
+              className="px-3 py-1 bg-yellow-500 text-white rounded"
             >
-              提取所有存款
+              提现
             </button>
           </div>
-          
-          {/* 状态显示 */}
-          <div className="bg-gray-800 p-3 rounded-md shadow-md text-white">
-            <h2 className="text-lg font-semibold mb-1">状态</h2>
-            <p className="font-medium text-sm">{status}</p>
-            {txHash && (
-              <p className="mt-1 text-xs overflow-hidden text-ellipsis text-gray-300 break-all">
-                交易: {txHash.substring(0, 10)}...{txHash.substring(txHash.length-4)}
-              </p>
-            )}
-          </div>
-        </div>
-        
-        {/* 右侧区域：存款方式 */}
-        <div className="md:col-span-3 flex flex-col gap-4">
-          <div className="bg-white p-3 rounded-md shadow-md">
-            <h2 className="text-xl font-semibold mb-3 text-gray-800 text-center">两种银行存款方式比较</h2>
-            
-            {/* 常规存款 - 拆分为两个步骤 */}
-            <div className="mb-4 bg-yellow-50 p-3 rounded-md">
-              <h3 className="font-medium mb-2 text-gray-800 border-b pb-1">方式1: Approve 然后 Deposit (两笔交易)</h3>
-              <div className="flex flex-col gap-2">
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-gray-700">金额</label>
-                  <input 
-                    type="text" 
-                    value={depositAmount} 
-                    onChange={(e) => setDepositAmount(e.target.value)}
-                    className="w-full p-1.5 border rounded text-gray-800 text-sm"
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <button 
-                    onClick={handleApprove}
-                    className="px-3 py-1.5 bg-purple-600 text-white rounded hover:bg-purple-700 font-medium flex-1 active:transform active:scale-95 active:bg-purple-800 transition-all duration-150"
-                  >
-                    第一步: Approve 授权
-                  </button>
-                  <button 
-                    onClick={handleDeposit}
-                    className="px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium flex-1 active:transform active:scale-95 active:bg-blue-800 transition-all duration-150"
-                  >
-                    第二步: Deposit 存款
-                  </button>
-                </div>
-                {approvedAmount !== '0' && (
-                  <div className="text-sm text-gray-700 mt-1">
-                    已授权金额: {approvedAmount} MTK
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            {/* Permit存款 */}
-            <div className="bg-green-50 p-3 rounded-md">
-              <h3 className="font-medium mb-2 text-gray-800 border-b pb-1">方式2: Permit存款 (一笔交易)</h3>
-              <div className="flex flex-col gap-2">
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-gray-700">存款金额</label>
-                  <input 
-                    type="text" 
-                    value={permitAmount} 
-                    onChange={(e) => setPermitAmount(e.target.value)}
-                    className="w-full p-1.5 border rounded text-gray-800 text-sm"
-                  />
-                </div>
-                <button 
-                  onClick={handlePermitDeposit}
-                  className="px-3 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-medium active:transform active:scale-95 active:bg-indigo-800 transition-all duration-150"
-                >
-                  一步完成: PermitDeposit
-                </button>
-              </div>
-            </div>
-            
-            {/* EIP2612说明 */}
-            <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-              <p><strong>EIP2612优势:</strong> 通过离线签名允许一步完成授权和存款，节省gas费并改善用户体验。</p>
-            </div>
-          </div>
-        </div>
+        </>
+      )}
+      {loading && <div className="text-blue-600">交易处理中...</div>}
+      {txHash && <div className="text-green-600">最新交易哈希: <a href={`#`} className="underline">{txHash}</a></div>}
+      {error && <div className="text-red-600">{error}</div>}
+      <div className="mt-8 text-xs text-gray-500">
+        合约地址：<br />
+        MyToken: {MYTOKEN_ADDR}<br />
+        tokenBank: {BANK_ADDR}<br />
+        Permit2: {PERMIT2_ADDR}
       </div>
     </main>
   );

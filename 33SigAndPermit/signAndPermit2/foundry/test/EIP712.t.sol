@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 import "../src/EIP712.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract EIP191Test is Test {
     EIP191 public eip191;
@@ -22,7 +23,7 @@ contract EIP191Test is Test {
         bytes memory messageBytes = bytes(message);
         
         // 使用私钥签名消息
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePrivateKey, MessageHashUtils.toEthSignedMessageHash(messageBytes));
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePrivateKey, ECDSA.toEthSignedMessageHash(messageBytes));
         bytes memory signature = abi.encodePacked(r, s, v);
         
         // 恢复签名者地址

@@ -3,8 +3,6 @@ pragma solidity ^0.8.20;
 
 // 导入ECDSA库，用于处理以太坊的数字签名
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-// 导入MessageHashUtils库，用于处理消息哈希
-import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 // 导入EIP712库，用于EIP712标准的签名验证
 import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
@@ -15,7 +13,7 @@ contract EIP191 {
     function recover(bytes memory message, bytes memory signature) public pure
     returns (address) {
         // 将消息转换为以太坊签名消息哈希
-        bytes32 hash = MessageHashUtils.toEthSignedMessageHash(message);
+        bytes32 hash = ECDSA.toEthSignedMessageHash(message);
         // 使用ECDSA库从哈希和签名中恢复出签名者的地址
         return ECDSA.recover(hash, signature);
     }   

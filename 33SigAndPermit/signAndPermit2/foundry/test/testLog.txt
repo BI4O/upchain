@@ -1,0 +1,20 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 2 tests for test/EIP712.t.sol:EIP712VerifierTest
+[PASS] testHashSend() (gas: 13919)
+[PASS] testVerify() (gas: 34757)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.41ms (808.75µs CPU time)
+
+Ran 1 test for test/EIP712.t.sol:EIP191Test
+[PASS] testRecover() (gas: 20580)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.40ms (337.63µs CPU time)
+
+Ran 6 tests for test/tokenAndBankWithPermit.t.sol:MyTokenAndBankTest
+[PASS] testDepositWithPermit2() (gas: 126627)
+[PASS] testExpiredPermit2() (gas: 57070)
+[PASS] testThirdPartyDepositWithPermit2() (gas: 128817)
+[PASS] testTokenInitialization() (gas: 33776)
+[PASS] testTraditionalDeposit() (gas: 86182)
+[PASS] testWithdraw() (gas: 83440)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 1.41ms (1.58ms CPU time)

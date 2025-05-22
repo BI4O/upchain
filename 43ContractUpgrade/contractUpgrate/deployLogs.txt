@@ -1,0 +1,101 @@
+
+== Logs ==
+  ERC20 deployed at: 0x046fcC0763bFe0D2290BB061525Fb4C26721E758
+  NFT logic deployed at: 0x086224DfD2641403e1b7c13471308f6bFF497764
+  NFT proxy deployed at: 0xd40C1D1C09636218e99961Cf0E0FaE0606C3e7b2
+  MarketV1 logic deployed at: 0xC4cE7503c0eD60AC3346fF335Fbf564e84E3bb4E
+  Market proxy deployed at: 0x54B8c96cf4B23DAfdB2F061fe8ce82851A78a0e0
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 0.004464732 gwei
+
+Estimated total gas used for script: 7729371
+
+Estimated amount required: 0.000034509570043572 ETH
+
+==========================
+
+##### sepolia
+✅  [Success] Hash: 0xadb43ac7b9d1be958a990871088dc22e6b90ea97d74c212827a819a5acc7c87f
+Contract Address: 0x046fcC0763bFe0D2290BB061525Fb4C26721E758
+Block: 8375218
+Paid: 0.000002454646930814 ETH (916747 gas * 0.002677562 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0xb4c522b453c52bae6ad8307fecaab4d17b6eb6e7814e8ce0c52318a2115b87ca
+Contract Address: 0x54B8c96cf4B23DAfdB2F061fe8ce82851A78a0e0
+Block: 8375218
+Paid: 0.000000657405732488 ETH (245524 gas * 0.002677562 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0xd18bc0c15df18432f903e0d2a631ede7de48aa17eb000896ad7cb82b74be3ee1
+Contract Address: 0xC4cE7503c0eD60AC3346fF335Fbf564e84E3bb4E
+Block: 8375218
+Paid: 0.000004861721617574 ETH (1815727 gas * 0.002677562 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0x433147c558fe82461377733871cb523b9d3194e96038999d9fe75c55bfa47997
+Contract Address: 0xd40C1D1C09636218e99961Cf0E0FaE0606C3e7b2
+Block: 8375218
+Paid: 0.000000665890926466 ETH (248693 gas * 0.002677562 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0x06120030f22c657b0cf82f60b077ad5ffe02052a4cdf04aae7a22263bab3e52d
+Contract Address: 0x086224DfD2641403e1b7c13471308f6bFF497764
+Block: 8375218
+Paid: 0.00000728023752676 ETH (2718980 gas * 0.002677562 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.000015919902734102 ETH (5945671 gas * avg 0.002677562 gwei)
+                                                                                         
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (5) contracts
+Start verifying contract `0x046fcC0763bFe0D2290BB061525Fb4C26721E758` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [MyToken] "0x046fcC0763bFe0D2290BB061525Fb4C26721E758".
+Contract successfully verified
+Start verifying contract `0x086224DfD2641403e1b7c13471308f6bFF497764` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [MyNFT_V1] "0x086224DfD2641403e1b7c13471308f6bFF497764".
+Contract successfully verified
+Start verifying contract `0xd40C1D1C09636218e99961Cf0E0FaE0606C3e7b2` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Constructor args: 000000000000000000000000086224dfd2641403e1b7c13471308f6bff497764000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c44cd88b76000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000007546573744e4654000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004544e46540000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [MyNFT_Proxy] "0xd40C1D1C09636218e99961Cf0E0FaE0606C3e7b2".
+Contract successfully verified
+Start verifying contract `0xC4cE7503c0eD60AC3346fF335Fbf564e84E3bb4E` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [NFTMarket_V1] "0xC4cE7503c0eD60AC3346fF335Fbf564e84E3bb4E".
+Contract successfully verified
+Start verifying contract `0x54B8c96cf4B23DAfdB2F061fe8ce82851A78a0e0` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Constructor args: 000000000000000000000000c4ce7503c0ed60ac3346ff335fbf564e84e3bb4e00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000044485cc955000000000000000000000000046fcc0763bfe0d2290bb061525fb4c26721e758000000000000000000000000d40c1d1c09636218e99961cf0e0fae0606c3e7b200000000000000000000000000000000000000000000000000000000
+Attempting to verify on Sourcify. Pass the --etherscan-api-key <API_KEY> to verify on Etherscan, or use the --verifier flag to verify on another provider.
+
+Submitting verification for [NFTMarket_Proxy] "0x54B8c96cf4B23DAfdB2F061fe8ce82851A78a0e0".
+Contract successfully verified
