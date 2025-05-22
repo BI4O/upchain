@@ -1,0 +1,8 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 1 test for test/Vaulttest.t.sol:VaultExploiter
+[PASS] testExploit() (gas: 384604)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.84ms (456.79µs CPU time)
+
+Ran 1 test suite in 252.35ms (1.84ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
