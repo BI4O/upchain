@@ -1,0 +1,12 @@
+作业：用chainlink的自定义逻辑自动化回收tokenBank的某个用户的余额
+
+1. 部署token到sepolia：0x05E9eF776C1f7D13180C6EdF2bebf9f7f74B6E81
+2. 部署tokenBank到sepolia：0x6AAEA242531A0a233BD9c9473DebB39b49417841
+3. 部署autoWithdraw到sepolis：0xb169345DCcBfBADE10c37074d30bA2B6dEE4f9d0
+4. 到chainlink automation注册自动化：https://automation.chain.link/sepolia/new，输入3的合约地址，给一些link代币
+5. 到remix调用token的approve给tokenBank一个尽量大的数比如99999999
+6. 到remit调用tokenBank中的deposit达到withdraw的条件（银行余额大于500就回收一半），等待一段时间（在autoWithdraw设置的检查间隔时间是20秒）
+7. 在chainlink automation：https://automation.chain.link/ 找到active的自动化，看看有没有自动化条件被触发的tx，如果有的话应该会消耗link代币
+
+
+本次作业自动化的链接：https://automation.chain.link/sepolia/89548283515717398143461840275474952160307440806350402564751193801160156390473
