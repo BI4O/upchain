@@ -1,0 +1,13 @@
+[⠊] Compiling...
+[⠑] Compiling 2 files with Solc 0.8.25
+[⠘] Solc 0.8.25 finished in 645.09ms
+Compiler run successful!
+
+Ran 4 tests for test/Vasting.t.sol:VastingTest
+[PASS] testCannotReleaseAfterAllReleased() (gas: 112164)
+[PASS] testCannotReleaseDuringCliff() (gas: 16444)
+[PASS] testMultiPeriodRelease() (gas: 128486)
+[PASS] testReleaseAfterCliff() (gas: 128218)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 6.82ms (3.16ms CPU time)
+
+Ran 1 test suite in 170.66ms (6.82ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
