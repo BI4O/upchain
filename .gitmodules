@@ -22,3 +22,9 @@
 [submodule "45ChainlinkAutomation/automation/lib/forge-std"]
 	path = 45ChainlinkAutomation/automation/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "51DefiAndUniswap/uniswap/lib/forge-std"]
+	path = 51DefiAndUniswap/uniswap/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "51DefiAndUniswap/uniswap/lib/openzeppelin-contracts"]
+	path = 51DefiAndUniswap/uniswap/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts

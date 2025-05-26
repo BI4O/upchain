@@ -228,7 +228,7 @@ contract MerkleDistributor {
 }
 ```
 
-然后线下就可以用这个默克尔树的claim来启动逻辑，这个函数名不一定叫claim，可以返回一个bool值，一切看你需要什么逻辑，比如
+然后线下就可以用这个默克尔树的claim来启动逻辑，这个函数名不一定叫claim，可以返回一个bool值，一切看你需要什么逻辑，比如专门写一个solidity函数
 
 ```solidity
 function isWhitelisted(address account, uint256 amount, bytes32[] calldata merkleProof) external view returns (bool) {
