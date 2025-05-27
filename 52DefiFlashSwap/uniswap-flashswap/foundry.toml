@@ -1,0 +1,13 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = [
+    "@uniswap/v2-core/contracts/=lib/v2-core/contracts/",
+    "@uniswap/v2-periphery/contracts/=lib/v2-periphery/contracts/",
+    "@uniswap/lib/contracts/=lib/solidity-lib/contracts/"
+]
+
+unchecked_cheatcode_artifacts = true
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
