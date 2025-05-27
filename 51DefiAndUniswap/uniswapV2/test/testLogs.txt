@@ -1,0 +1,14 @@
+bi4o@Macbi4o uniswapV2 % forge test --fork-url http://localhost:8545
+[⠊] Compiling...
+[⠑] Compiling 2 files with Solc 0.8.25
+[⠘] Solc 0.8.25 finished in 696.74ms
+Compiler run successful!
+
+Ran 4 tests for test/uniswapDeployer.t.sol:UniswapTests
+[PASS] test_addLiqToken() (gas: 4628508)
+[PASS] test_deployedRouter() (gas: 5683)
+[PASS] test_uniswapFactory() (gas: 7847)
+[PASS] test_wrappedEther() (gas: 9665)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 74.35ms (14.24ms CPU time)
+
+Ran 1 test suite in 175.15ms (74.35ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
