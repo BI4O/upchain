@@ -1,7 +1,7 @@
-bi4o@Macbi4o uniswapV2 % forge test --fork-url http://localhost:8545
+(base) bi4o@Macbi4o uniswap-flashswap % forge test                                
 [⠊] Compiling...
-[⠑] Compiling 2 files with Solc 0.8.25
-[⠘] Solc 0.8.25 finished in 696.74ms
+[⠃] Compiling 1 files with Solc 0.8.25
+[⠊] Solc 0.8.25 finished in 871.59ms
 Compiler run successful!
 
 Ran 4 tests for test/uniswapDeployer.t.sol:UniswapTests
@@ -9,6 +9,16 @@ Ran 4 tests for test/uniswapDeployer.t.sol:UniswapTests
 [PASS] test_deployedRouter() (gas: 5683)
 [PASS] test_uniswapFactory() (gas: 7847)
 [PASS] test_wrappedEther() (gas: 9665)
-Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 74.35ms (14.24ms CPU time)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.57ms (2.53ms CPU time)
 
-Ran 1 test suite in 175.15ms (74.35ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
+Ran 7 tests for test/uniswapDeployeFlashSwap.sol:DeployDexAndPoolsTest
+[PASS] test_factoryXDeployed() (gas: 7795)
+[PASS] test_factoryYDeployed() (gas: 7841)
+[PASS] test_flashSwap_arbitrage() (gas: 1610909)
+[PASS] test_routerXDeployed() (gas: 5726)
+[PASS] test_routerYDeployed() (gas: 5660)
+[PASS] test_swapDexXReserveChange() (gas: 171355)
+[PASS] test_swapDexYReserveChange() (gas: 170191)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 13.15ms (5.07ms CPU time)
+
+Ran 2 test suites in 209.08ms (22.72ms CPU time): 11 tests passed, 0 failed, 0 skipped (11 total tests)

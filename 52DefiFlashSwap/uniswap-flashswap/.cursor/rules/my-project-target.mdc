@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 在已经运行的anvil网络上（http://localhost:8545）
+
+# src/ 和 script/
+1. 部署两个自己的ERC20合约TokenA和TokenB,
+2. 部署两个用UniswapV2代码的的dexX和dexY,，每个dex创建一个流动池(PoolA 和 PoolB),形成价差。
+
+# test/
+3. 编写合约执行闪电贷(参考 example/flashSwap.sol):
+- uniswapV2Call中,用从 PoolA 收到的 TokenA 在PoolB 兑换为 TokenB 并还回到 uniswapV2 Pair 中。
