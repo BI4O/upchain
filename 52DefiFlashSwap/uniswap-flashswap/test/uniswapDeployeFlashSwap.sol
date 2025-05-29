@@ -160,6 +160,7 @@ contract DeployDexAndPoolsTest is Test {
     dexY添加流动性 10000A:1000B
     */
     function test_flashSwap_arbitrage() public {
+        // bob就算事没有钱也可以成功
         vm.startPrank(bob);
         // uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data)
         // 1. 部署FlashSwap合约，套利方向：在factoryY借TokenA，在routerX卖TokenA换TokenB
