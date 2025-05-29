@@ -49,3 +49,6 @@
 [submodule "51DefiAndUniswap/uniswapV2/lib/solmate"]
 	path = 51DefiAndUniswap/uniswapV2/lib/solmate
 	url = https://github.com/transmissions11/solmate
+[submodule "54StableCoin/rebaseStableCoin/lib/forge-std"]
+	path = 54StableCoin/rebaseStableCoin/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

@@ -1,0 +1,19 @@
+(base) bi4o@Macbi4o rebaseStableCoin % forge test -vv
+[⠊] Compiling...
+[⠘] Compiling 1 files with Solc 0.8.25
+[⠃] Solc 0.8.25 finished in 751.23ms
+Compiler run successful!
+
+Ran 1 test for test/RebaseStableCoin.t.sol:RebaseStableCoinTest
+[PASS] testRebaseIncreasesBalanceOf() (gas: 173861)
+Logs:
+  before K 100000000000000000000000
+  after K 99000000000000000000000
+  user1 before: 10000000000000000000
+  user1 after: 10101010101010101010
+  user2 before: 20000000000000000000
+  user2 after: 20202020202020202020
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.34ms (525.71µs CPU time)
+
+Ran 1 test suite in 203.41ms (1.34ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
