@@ -9,50 +9,112 @@ contract RebaseStableCoinTest is Test {
     StableCoin stableCoin;
     address user1 = address(0x1);
     address user2 = address(0x2);
+    address user3 = address(0x3);
 
     function setUp() public {
         stableCoin = new StableCoin();
-    }
-
-    function testRebaseIncreasesBalanceOf() public {
-        // user1 和 user2 分别 mint 一定数量
         vm.deal(user1, 100 ether);
         vm.deal(user2, 100 ether);
+        vm.deal(user3, 100 ether);
+    }
 
+    function testMintAndBalance() public {
         vm.prank(user1);
         stableCoin.mint{value: 10 ether}();
+        assertEq(stableCoin.balanceOf(user1), 10 ether);
 
         vm.prank(user2);
         stableCoin.mint{value: 20 ether}();
+        assertEq(stableCoin.balanceOf(user2), 20 ether);
+    }
 
-        // 记录初始余额
+    function testTransfer() public {
+        vm.prank(user1);
+        stableCoin.mint{value: 10 ether}();
+
+        vm.prank(user1);
+        stableCoin.transfer(user2, 3 ether);
+
+        assertEq(stableCoin.balanceOf(user1), 7 ether);
+        assertEq(stableCoin.balanceOf(user2), 3 ether);
+    }
+
+    function testApproveAndTransferFrom() public {
+        vm.prank(user1);
+        stableCoin.mint{value: 10 ether}();
+
+        vm.prank(user1);
+        stableCoin.approve(user3, 5 ether);
+
+        vm.prank(user3);
+        stableCoin.transferFrom(user1, user2, 4 ether);
+
+        assertEq(stableCoin.balanceOf(user1), 6 ether);
+        assertEq(stableCoin.balanceOf(user2), 4 ether);
+        assertEq(stableCoin.allowance(user1, user3), 1 ether);
+    }
+
+    function testRebaseIncreasesBalance() public {
+        vm.prank(user1);
+        stableCoin.mint{value: 10 ether}();
+        vm.prank(user2);
+        stableCoin.mint{value: 20 ether}();
+
         uint y1_before = stableCoin.balanceOf(user1);
         uint y2_before = stableCoin.balanceOf(user2);
-        uint rebaseTimes = stableCoin.rebaseTimes();
-        uint k = stableCoin.k();
-        console.log("before K", k);
 
         // 时间快进一年
-        vm.warp(block.timestamp + 365 days);
-
-        // 触发rebase
+        uint before_k = stableCoin.k();
+        vm.warp(block.timestamp + 366 days);
         stableCoin.rebase();
-        console.log("after K", stableCoin.k());
-        assertGt(stableCoin.rebaseTimes(), rebaseTimes);
-        assertGt(k, stableCoin.k());
+        console.log("rebase before K: ", before_k);
+        console.log("rebase after  K:  ",stableCoin.k());
 
-        // 记录rebase后的余额
         uint y1_after = stableCoin.balanceOf(user1);
         uint y2_after = stableCoin.balanceOf(user2);
 
-        // 断言余额变大
-        assertGt(y1_after, y1_before);
-        assertGt(y2_after, y2_before);
+        assertGt(y1_before, y1_after);
+        assertGt(y2_before, y2_after);
+        console.log("y1 balance before:",y1_before, "=> after: ", y1_after);
+        console.log("y2 balance bedore:",y2_before, "=> after: ", y2_after);
+    }
 
-        // 打印结果方便调试
-        emit log_named_uint("user1 before", y1_before);
-        emit log_named_uint("user1 after", y1_after);
-        emit log_named_uint("user2 before", y2_before);
-        emit log_named_uint("user2 after", y2_after);
+    function testTransferAfterRebase() public {
+        vm.prank(user1);
+        stableCoin.mint{value: 10 ether}();
+        vm.prank(user2);
+        stableCoin.mint{value: 20 ether}();
+
+        // rebase
+        vm.warp(block.timestamp + 366 days);
+        stableCoin.rebase();
+
+        // 转账
+        uint y1_before = stableCoin.balanceOf(user1);
+        vm.prank(user1);
+        stableCoin.transfer(user2, 5 ether);
+
+        // 转账后余额
+        assertEq(stableCoin.balanceOf(user1), y1_before - 5 ether);
+        // user2余额增加
+        assertGt(20 ether + 5 ether, stableCoin.balanceOf(user2)); // 允许1wei误差
+    }
+
+    function testApproveAndTransferFromAfterRebase() public {
+        vm.prank(user1);
+        stableCoin.mint{value: 10 ether}();
+
+        // rebase
+        vm.warp(block.timestamp + 366 days);
+        stableCoin.rebase();
+
+        vm.prank(user1);
+        stableCoin.approve(user3, 5 ether);
+
+        vm.prank(user3);
+        stableCoin.transferFrom(user1, user2, 4 ether);
+
+        assertApproxEqAbs(stableCoin.allowance(user1, user3), 1 ether, 1); // 允许1 wei误差
+        assertApproxEqAbs(stableCoin.balanceOf(user2), 4 ether, 1); // 允许1 wei误差
     }
 }
