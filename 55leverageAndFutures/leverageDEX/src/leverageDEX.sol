@@ -53,9 +53,10 @@ contract SimpleLeverageDEX {
 
         // 计算头寸：相当于有多少个eth
         if (long) {
-            pos.position = int256((vETHAmount * amount) / (vUSDCAmount + amount));
+            // 得到的eth数量 = e0 - e1 = e0 - k/(u1) = e0 - k/(u0 + 新增u)
+            pos.position = int256(vETHAmount - vK / (vUSDCAmount + amount));
         } else {
-            pos.position = -int256((vETHAmount * amount) / (vUSDCAmount + amount));
+            pos.position = -int256(vETHAmount - vK / (vUSDCAmount + amount));
         }
     }
 
