@@ -1,0 +1,50 @@
+bi4o@Macbi4o leverageDEX % forge test -vv          
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 6 tests for test/leverageDEX.t.sol:SimpleLeverageDEXTest
+[PASS] testLiquidationFail() (gas: 1197193)
+Logs:
+  simulateSwapTilETHPriceLowerThan finished, finalPrice:
+  2900
+  totalEthIn:
+  1700000000000000000000
+  payout:
+  666344455184827171700
+  liquidation line:
+  200000000000000000000
+
+[PASS] testLiquidationSuccess() (gas: 3457713)
+Logs:
+  simulateSwapTilETHPriceLowerThan finished, finalPrice:
+  2700
+  totalEthIn:
+  5390000000000000000000
+  payout:
+  0
+  liquidation line:
+  200000000000000000000
+
+[PASS] testLongStopLoss() (gas: 754530)
+Logs:
+  stop loss pnl:
+  496975030249697503000
+  Loss(USDC):
+  502
+  Loss rate(%):
+  50
+
+[PASS] testLongTakeProfit() (gas: 180845731)
+Logs:
+  take profit pnl:
+  1499965000349996500000
+  profit(USDC):
+  499
+  profit rate(%):
+  49
+
+[PASS] testOpenLongAndClose() (gas: 93856)
+[PASS] testOpenShortAndClose() (gas: 93989)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 599.40ms (616.30ms CPU time)
+
+Ran 1 test suite in 603.12ms (599.40ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)

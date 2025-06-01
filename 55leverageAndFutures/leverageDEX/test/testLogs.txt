@@ -1,0 +1,12 @@
+bi4o@Macbi4o leverageDEX % forge test    
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 6 tests for test/leverageDEX.t.sol:SimpleLeverageDEXTest
+[PASS] testLiquidationFail() (gas: 1197193)
+[PASS] testLiquidationSuccess() (gas: 3457713)
+[PASS] testLongStopLoss() (gas: 754530)
+[PASS] testLongTakeProfit() (gas: 180845731)
+[PASS] testOpenLongAndClose() (gas: 93856)
+[PASS] testOpenShortAndClose() (gas: 93989)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 593.97ms (613.07ms CPU time)
