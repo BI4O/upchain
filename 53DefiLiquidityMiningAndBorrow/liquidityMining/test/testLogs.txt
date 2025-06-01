@@ -1,0 +1,14 @@
+bi4o@Macbi4o liquidityMining % forge test    
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 8 tests for test/StakingPool.t.sol:StakingPoolTest
+[PASS] testInit() (gas: 30447)
+[PASS] testMultiUserStakeAndReward() (gas: 478481)
+[PASS] testMultipleStakeClaim() (gas: 325683)
+[PASS] testNoStakeNoReward() (gas: 17082)
+[PASS] testSingleStakeAndClaim() (gas: 302941)
+[PASS] testStakeUnstakeImmediately() (gas: 191884)
+[PASS] testUnstake() (gas: 336246)
+[PASS] testViewFunctions() (gas: 255424)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.50ms (2.36ms CPU time)

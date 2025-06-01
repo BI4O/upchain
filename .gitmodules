@@ -52,3 +52,6 @@
 [submodule "54StableCoin/rebaseStableCoin/lib/forge-std"]
 	path = 54StableCoin/rebaseStableCoin/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "53DefiLiquidityMiningAndBorrow/liquidityMining/lib/forge-std"]
+	path = 53DefiLiquidityMiningAndBorrow/liquidityMining/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
