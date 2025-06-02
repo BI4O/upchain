@@ -1,0 +1,22 @@
+(base) bi4o@Macbi4o DAO % forge test
+[⠊] Compiling...
+[⠘] Compiling 1 files with Solc 0.8.25
+[⠃] Solc 0.8.25 finished in 789.33ms
+Compiler run successful!
+
+Ran 5 tests for test/token.t.sol:TokenTest
+[PASS] testGetCurrentVotesEqualsBalance() (gas: 198132)
+[PASS] testGetPriorVotes() (gas: 224805)
+[PASS] testMintCheckpoint() (gas: 115485)
+[PASS] testMultipleCheckpoints() (gas: 243735)
+[PASS] testTransferCheckpoint() (gas: 194535)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 2.17ms (1.40ms CPU time)
+
+Ran 4 tests for test/dao.t.sol:DaoTest
+[PASS] testProposeAfterExecuted() (gas: 233069)
+[PASS] testProposeAndVoteAndExecute() (gas: 313254)
+[PASS] testProposeWhenActiveProposal() (gas: 99282)
+[PASS] testSnapshotVotes() (gas: 312410)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 2.26ms (1.72ms CPU time)
+
+Ran 2 test suites in 207.66ms (4.43ms CPU time): 9 tests passed, 0 failed, 0 skipped (9 total tests)

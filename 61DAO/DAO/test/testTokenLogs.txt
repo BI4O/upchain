@@ -1,0 +1,13 @@
+bi4o@Macbi4o DAO % forge test --fork-url https://eth-mainnet.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 5 tests for test/token.t.sol:TokenTest
+[PASS] testGetCurrentVotesEqualsBalance() (gas: 198132)
+[PASS] testGetPriorVotes() (gas: 224805)
+[PASS] testMintCheckpoint() (gas: 115485)
+[PASS] testMultipleCheckpoints() (gas: 243735)
+[PASS] testTransferCheckpoint() (gas: 194535)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 2.72s (13.30ms CPU time)
+
+Ran 1 test suite in 3.71s (2.72s CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)
