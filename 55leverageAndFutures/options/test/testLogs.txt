@@ -1,0 +1,15 @@
+bi4o@Macbi4o options % forge test
+[⠊] Compiling...
+[⠑] Compiling 2 files with Solc 0.8.25
+[⠘] Solc 0.8.25 finished in 654.74ms
+Compiler run successful!
+
+Ran 5 tests for test/options.t.sol:CallOptionTest
+[PASS] testCannotCreateTwice() (gas: 268545)
+[PASS] testCannotExerciseAfterExpire() (gas: 307738)
+[PASS] testCreateOption() (gas: 247570)
+[PASS] testExercise() (gas: 379257)
+[PASS] testExpireOption() (gas: 233806)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 6.39ms (7.54ms CPU time)
+
+Ran 1 test suite in 165.41ms (6.39ms CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)
