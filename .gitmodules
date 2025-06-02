@@ -58,3 +58,6 @@
 [submodule "55leverageAndFutures/leverageDEX/lib/forge-std"]
 	path = 55leverageAndFutures/leverageDEX/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "55leverageAndFutures/options/lib/forge-std"]
+	path = 55leverageAndFutures/options/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
