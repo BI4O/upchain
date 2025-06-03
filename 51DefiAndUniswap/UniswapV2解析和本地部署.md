@@ -158,7 +158,7 @@ forge init
 forge install https://github.com/Uniswap/v2-core.git --no-git
 forge install https://github.com/Uniswap/v2-periphery.git --no-git
 forge install https://github.com/Uniswap/solidity-lib.git --no-git
-forge install https://github.com/transmissions11/solmate... --no-git
+forge install https://github.com/transmissions11/solmate.git --no-git
 ```
 
 写好remapping到`foundry.toml`，以及关闭多版本检查

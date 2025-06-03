@@ -1,0 +1,78 @@
+(flashbot) bi4o@Macbi4o flashbot % python presaleNFTSniper.py sepolia 
+2025-06-04 00:21:07,189 - INFO - 启动Flashbots抢购脚本，网络：sepolia
+2025-06-04 00:21:07,198 - INFO - Using RPC: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr
+2025-06-04 00:21:07,198 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: web3_clientVersion
+2025-06-04 00:21:07,198 - DEBUG - Session cached: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, <requests.sessions.Session object at 0x107ed2f10>
+2025-06-04 00:21:07,204 - DEBUG - Starting new HTTPS connection (1): eth-sepolia.g.alchemy.com:443
+2025-06-04 00:21:07,771 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:07,771 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: web3_clientVersion, Response: {'jsonrpc': '2.0', 'id': 0, 'result': 'reth/v1.4.3-fe3653f/x86_64-unknown-linux-gnu'}
+2025-06-04 00:21:07,774 - INFO - Connected to sepolia network
+2025-06-04 00:21:07,775 - DEBUG - Making request. Method: eth_chainId
+2025-06-04 00:21:07,775 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId
+2025-06-04 00:21:08,109 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:08,110 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId, Response: {'jsonrpc': '2.0', 'id': 1, 'result': '0xaa36a7'}
+2025-06-04 00:21:08,110 - INFO - Chain ID: 11155111
+2025-06-04 00:21:08,110 - DEBUG - Making request. Method: eth_blockNumber
+2025-06-04 00:21:08,110 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber
+2025-06-04 00:21:08,490 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:08,491 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber, Response: {'jsonrpc': '2.0', 'id': 2, 'result': '0x813a3e'}
+2025-06-04 00:21:08,491 - INFO - Latest block: 8469054
+2025-06-04 00:21:08,491 - INFO - 发送钱包地址：0x62B7bA3Ec9cAa1985d63f20651E1167ae8aDbb84
+2025-06-04 00:21:08,491 - DEBUG - Making request. Method: eth_getBalance
+2025-06-04 00:21:08,491 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_getBalance
+2025-06-04 00:21:08,832 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:08,832 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_getBalance, Response: {'jsonrpc': '2.0', 'id': 3, 'result': '0x212be7a8731aff4'}
+2025-06-04 00:21:08,832 - INFO - 钱包余额充足：0.1493911711201157 ETH
+2025-06-04 00:21:08,837 - DEBUG - Making request. Method: eth_call
+2025-06-04 00:21:08,837 - DEBUG - Making request. Method: eth_chainId
+2025-06-04 00:21:08,837 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId
+2025-06-04 00:21:09,312 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:09,312 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId, Response: {'jsonrpc': '2.0', 'id': 4, 'result': '0xaa36a7'}
+2025-06-04 00:21:09,313 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_call
+2025-06-04 00:21:09,997 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:09,998 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_call, Response: {'jsonrpc': '2.0', 'id': 5, 'result': '0x0000000000000000000000000000000000000000000000000000000000000001'}
+2025-06-04 00:21:09,998 - INFO - 预售已开启，立即抢购！
+2025-06-04 00:21:09,999 - DEBUG - Making request. Method: eth_getTransactionCount
+2025-06-04 00:21:09,999 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_getTransactionCount
+2025-06-04 00:21:10,329 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:10,330 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_getTransactionCount, Response: {'jsonrpc': '2.0', 'id': 6, 'result': '0x41'}
+2025-06-04 00:21:10,330 - DEBUG - Making request. Method: eth_chainId
+2025-06-04 00:21:10,330 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId
+2025-06-04 00:21:10,669 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:10,669 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_chainId, Response: {'jsonrpc': '2.0', 'id': 7, 'result': '0xaa36a7'}
+2025-06-04 00:21:10,675 - DEBUG - Making request. Method: eth_blockNumber
+2025-06-04 00:21:10,675 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber
+2025-06-04 00:21:11,092 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:11,092 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber, Response: {'jsonrpc': '2.0', 'id': 8, 'result': '0x813a3f'}
+2025-06-04 00:21:11,092 - INFO - 第1次尝试，目标区块：8469056，发送抢购交易...
+2025-06-04 00:21:11,101 - INFO - Sending bundle targeting block 8469056
+2025-06-04 00:21:11,101 - DEBUG - Making request. Method: eth_sendBundle
+2025-06-04 00:21:11,101 - DEBUG - Making request HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle
+2025-06-04 00:21:11,106 - DEBUG - Session cached: https://relay-sepolia.flashbots.net, <requests.sessions.Session object at 0x107fe9ee0>
+2025-06-04 00:21:11,107 - DEBUG - Starting new HTTPS connection (1): relay-sepolia.flashbots.net:443
+2025-06-04 00:21:12,293 - DEBUG - https://relay-sepolia.flashbots.net:443 "POST / HTTP/1.1" 200 82
+2025-06-04 00:21:12,294 - DEBUG - Getting response HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle, Response: {'id': 0, 'error': {'code': -32000, 'message': 'internal server error'}, 'jsonrpc': '2.0'}
+2025-06-04 00:21:12,294 - ERROR - 发送抢购交易时发生错误：{'code': -32000, 'message': 'internal server error'}
+2025-06-04 00:21:24,299 - DEBUG - Making request. Method: eth_blockNumber
+2025-06-04 00:21:24,300 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber
+2025-06-04 00:21:24,678 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:24,681 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber, Response: {'jsonrpc': '2.0', 'id': 9, 'result': '0x813a40'}
+2025-06-04 00:21:24,682 - INFO - 第2次尝试，目标区块：8469057，发送抢购交易...
+2025-06-04 00:21:24,692 - INFO - Sending bundle targeting block 8469057
+2025-06-04 00:21:24,692 - DEBUG - Making request. Method: eth_sendBundle
+2025-06-04 00:21:24,692 - DEBUG - Making request HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle
+2025-06-04 00:21:25,116 - DEBUG - https://relay-sepolia.flashbots.net:443 "POST / HTTP/1.1" 200 82
+2025-06-04 00:21:25,118 - DEBUG - Getting response HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle, Response: {'id': 1, 'error': {'code': -32000, 'message': 'internal server error'}, 'jsonrpc': '2.0'}
+2025-06-04 00:21:25,118 - ERROR - 发送抢购交易时发生错误：{'code': -32000, 'message': 'internal server error'}
+2025-06-04 00:21:37,120 - DEBUG - Making request. Method: eth_blockNumber
+2025-06-04 00:21:37,121 - DEBUG - Making request HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber
+2025-06-04 00:21:37,459 - DEBUG - https://eth-sepolia.g.alchemy.com:443 "POST /v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr HTTP/1.1" 200 None
+2025-06-04 00:21:37,459 - DEBUG - Getting response HTTP. URI: https://eth-sepolia.g.alchemy.com/v2/aCJ6h5b6OSIffC681c9fLBq0LlUqT1gr, Method: eth_blockNumber, Response: {'jsonrpc': '2.0', 'id': 10, 'result': '0x813a41'}
+2025-06-04 00:21:37,460 - INFO - 第3次尝试，目标区块：8469058，发送抢购交易...
+2025-06-04 00:21:37,469 - INFO - Sending bundle targeting block 8469058
+2025-06-04 00:21:37,469 - DEBUG - Making request. Method: eth_sendBundle
+2025-06-04 00:21:37,469 - DEBUG - Making request HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle
+2025-06-04 00:21:37,849 - DEBUG - https://relay-sepolia.flashbots.net:443 "POST / HTTP/1.1" 200 82
+2025-06-04 00:21:37,851 - DEBUG - Getting response HTTP. URI: https://relay-sepolia.flashbots.net, Method: eth_sendBundle, Response: {'id': 2, 'error': {'code': -32000, 'message': 'internal server error'}, 'jsonrpc': '2.0'}
+2025-06-04 00:21:37,851 - ERROR - 发送抢购交易时发生错误：{'code': -32000, 'message': 'internal server error'}
+2025-06-04 00:21:37,851 - ERROR - 连续多次尝试后仍未抢到，脚本结束。

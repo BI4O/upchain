@@ -1,0 +1,15 @@
+# 核心依赖
+web3==6.11.3
+flashbots==2.0.0
+eth-account==0.9.0
+
+# 网络和HTTP相关
+requests==2.31.0
+
+# 密码学相关
+cryptography==41.0.7
+eth-keys==0.4.0
+eth-utils==2.3.0
+
+# 可选：如果你需要更好的日志输出
+colorlog==6.7.0
