@@ -1,0 +1,16 @@
+bi4o@Macbi4o NFT-market % forge test
+[⠊] Compiling...
+[⠑] Compiling 1 files with Solc 0.8.25
+[⠘] Solc 0.8.25 finished in 699.85ms
+Compiler run successful!
+
+Ran 6 tests for test/NFTmarket.t.sol:NFTMarketTest
+[PASS] testBuyNFTNotEnoughTokenRevert() (gas: 155803)
+[PASS] testBuyNFTTwiceRevert() (gas: 163362)
+[PASS] testEventNftListed() (gas: 114492)
+[PASS] testEventNftSold() (gas: 163768)
+[PASS] testListAndBuyNFT() (gas: 182484)
+[PASS] testListNotOwnerRevert() (gas: 20788)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 7.29ms (5.57ms CPU time)
+
+Ran 1 test suite in 165.83ms (7.29ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)

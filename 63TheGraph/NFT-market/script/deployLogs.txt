@@ -1,0 +1,117 @@
+bi4o@Macbi4o NFT-market % forge script script/NFTmarkst.s.sol:NFTMarketDeployScript \
+  --private-key $DEPLOYER \
+  --rpc-url $SEPOLIA_RPC_URL \
+  --etherscan-api-key $ETHERSCAN_APIKEY \
+  --chain-id $SEPOLIA_CHAINID \
+  --broadcast \
+  --verify
+[⠊] Compiling...
+[⠑] Compiling 2 files with Solc 0.8.25
+[⠃] Solc 0.8.25 finished in 675.35ms
+Compiler run successful!
+Script ran successfully.
+
+== Logs ==
+  NFT deployed at: 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84
+  ERC20token deployed at: 0xeECbb63Bf30282048bdDe156F4451948c009AD87
+  NFTMarket deployed at: 0x002c28A71e35f273C154399446112aE1c3e8F4e5
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 0.001000076 gwei
+
+Estimated total gas used for script: 5230691
+
+Estimated amount required: 0.000005231088532516 ETH
+
+==========================
+
+##### sepolia
+✅  [Success] Hash: 0x199d6d94edc825e5c37040a09d00c6b018931ab23549d6c2c8ed85946b796cc9
+Block: 8474339
+Paid: 0.00000183318132432 ETH (1833108 gas * 0.00100004 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0x30cda3f640e787b769e30706829ce061a32c677c27b3494016b33b79fedb07a5
+Block: 8474339
+Paid: 0.0000009329323158 ETH (932895 gas * 0.00100004 gwei)
+
+
+##### sepolia
+✅  [Success] Hash: 0x6ff10cd1bd49d28e7f5e17855008aa9935ac1e375d319b23767adc3bf4f5ce4f
+Block: 8474339
+Paid: 0.000001020965837 ETH (1020925 gas * 0.00100004 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.00000378707947712 ETH (3786928 gas * avg 0.00100004 gwei)
+                                                                                                                                 
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (3) contracts
+Start verifying contract `0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Warning: Could not detect the deployment.; waiting 5 seconds before trying again (4 tries remaining)
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Warning: Could not detect the deployment.; waiting 5 seconds before trying again (3 tries remaining)
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Warning: Could not detect the deployment.; waiting 5 seconds before trying again (2 tries remaining)
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Warning: Could not detect the deployment.; waiting 5 seconds before trying again (1 tries remaining)
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Warning: Could not detect the deployment.; waiting 5 seconds before trying again (0 tries remaining)
+
+Submitting verification for [src/NFTmarket.sol:NFT] 0xEe02a124D8aF9224C8D9D4a22d4D4f6D11d96a84.
+Error: Failed to verify contract: Could not detect the deployment.
+Start verifying contract `0xeECbb63Bf30282048bdDe156F4451948c009AD87` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+
+Submitting verification for [src/NFTmarket.sol:ERC20token] 0xeECbb63Bf30282048bdDe156F4451948c009AD87.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `ya5nndrmjmjt2pk8eaphaiw4puvmlpjdhtjwjwrzzayvxjez1l`
+        URL: https://sepolia.etherscan.io/address/0xeecbb63bf30282048bdde156f4451948c009ad87
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Warning: Verification is still pending...; waiting 15 seconds before trying again (7 tries remaining)
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0x002c28A71e35f273C154399446112aE1c3e8F4e5` deployed on sepolia
+EVM version: cancun
+Compiler version: 0.8.25
+Constructor args: 000000000000000000000000eecbb63bf30282048bdde156f4451948c009ad87000000000000000000000000ee02a124d8af9224c8d9d4a22d4d4f6d11d96a84
+
+Submitting verification for [src/NFTmarket.sol:NFTMarket] 0x002c28A71e35f273C154399446112aE1c3e8F4e5.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `6yq1sf52zthdav3xbavnnikqi1kzywpnl1ibnhb4siwxgva3tz`
+        URL: https://sepolia.etherscan.io/address/0x002c28a71e35f273c154399446112ae1c3e8f4e5
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Warning: Verification is still pending...; waiting 15 seconds before trying again (7 tries remaining)
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+
+Transactions saved to: /Users/bi4o/Desktop/2025web3/63TheGraph/NFT-market/broadcast/NFTmarkst.s.sol/11155111/run-latest.json
+
+Sensitive values saved to: /Users/bi4o/Desktop/2025web3/63TheGraph/NFT-market/cache/NFTmarkst.s.sol/11155111/run-latest.json
