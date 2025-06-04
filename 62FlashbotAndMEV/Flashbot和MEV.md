@@ -99,43 +99,58 @@ bool public isPresaleActive = true;
 ##### simply.py
 
 ```python
-# 查看自己的nonce
+# 1. 加载合约
+with open("presailNFT.json", "r") as f:
+    NFT_ABI = json.load(f)
+NFT_CONTRACT_ADDRESS = "0x4c1598aC47B10958aA3a6Bf5556a383486Bb9de7"
+nft_contract = w3.eth.contract(address=NFT_CONTRACT_ADDRESS, abi=NFT_ABI)
+
+# 2. 监听 presale 状态
+while True:
+    is_active = nft_contract.functions.isPresaleActive().call()
+    if is_active:
+        logger.info("预售已开启，立即抢购！")
+        break
+    else:
+        logger.info("预售未开启，等待中...")
+    time.sleep(1)
+
+# 3. 构造 presale(1) 交易
 nonce = w3.eth.get_transaction_count(sender.address)
-# Tx1:监听 MemPool 中的 enablePresale 交易
-tx1 = create_transaction(w3, sender.address, receiver, nonce, network)
-# Tx2: 签名 presale(1024) 交易,但不发送
-tx2 = create_transaction(w3, sender.address, receiver, nonce + 1, network)
-# 私钥签名
-tx1_signed = w3.eth.account.sign_transaction(tx1, private_key=sender.key)
-# 
+presale_tx = nft_contract.functions.presale(1).build_transaction({
+    "from": sender.address,
+    "value": w3.to_wei(0.05, "ether"),
+    "nonce": nonce,
+    "gas": 300_000,
+    "maxFeePerGas": w3.to_wei(3, "gwei"),
+    "maxPriorityFeePerGas": w3.to_wei(2, "gwei"),
+    "chainId": w3.eth.chain_id,
+})
+signed_presale_tx = w3.eth.account.sign_transaction(presale_tx, private_key=sender.key)
+
 bundle = [
-    {"signed_transaction": tx1_signed.rawTransaction},
-    {"transaction": tx2, "signer": sender},
+    {"signed_transaction": signed_presale_tx.rawTransaction}
 ]
 
-# 不停去试
-while True:
-    block = w3.eth.block_number
-
-    # 主网才可以模拟，如果连模拟都不成功，就不用进行后面了
-    if network == "mainnet":
-        # 当前区块模拟
-        # 如果不够快 "block extrapolation negative"
+# 尝试发送 bundle
+max_attempts = 3
+for attempt in range(max_attempts):
+    try:
+        current_block = w3.eth.block_number
+        target_block = current_block + 1
+        replacement_uuid = str(uuid4())
+        logger.info(f"第{attempt + 1}次尝试，目标区块：{target_block}，发送抢购交易...")
+        send_result = w3.flashbots.send_bundle(
+            bundle,
+            target_block_number=target_block,
+            opts={"replacementUuid": replacement_uuid},
+        )
         try:
-            w3.flashbots.simulate(bundle, block)
-        except Exception as e:
-            print(f"Simulation error: {e}")
+            send_result.wait()
+            receipts = send_result.receipts()
+            logger.info(f"抢购成功！交易已打包进区块 {receipts[0].blockNumber}")
             return
-
-    # 对下一个区块发送这个bundle包
-    replacement_uuid = str(uuid4())
-    logger.info(f"replacementUuid {replacement_uuid}")
-    send_result = w3.flashbots.send_bundle(
-        bundle,
-        target_block_number=block + 1,
-        opts={"replacementUuid": replacement_uuid},
-    )
-    # 打印出交易hash就代表成功了
-    print(f"bundleHash {w3.to_hex(send_result.bundle_hash())}")
+        except TransactionNotFound:
+            logger.warning(f"本轮未抢到，区块 {target_block} 未包含交易。")
 ```
 

@@ -50,7 +50,7 @@ FLASHBOTS_NETWORKS = {
         "chain_id": 5,
     },
     Network.SEPOLIA: {
-        "provider_url": "https://eth-sepolia.g.alchemy.com/v2/your-alchemy-key",
+        "provider_url": "https://sepolia.infura.io/v3/33115389a88b4072bd35df8d6cf7890e",
         "relay_url": "https://relay-sepolia.flashbots.net", 
         "chain_id": 11155111,
     },
@@ -103,7 +103,7 @@ def parse_arguments():
 def env(key: str) -> str:
     value = os.environ.get(key)
     if value is None:
-        raise ValueError(f"Environment variable '{key}' is not set")
+        raise ValueError(f"环境变量 '{key}' 未找到")
     return value
 
 def random_account() -> LocalAccount:
@@ -118,14 +118,14 @@ def setup_web3(network: Network):
     provider_url = os.environ.get(
         "PROVIDER_URL", FLASHBOTS_NETWORKS[network]["provider_url"]
     )
-    logger.info(f"Using RPC: {provider_url}")
+    logger.info(f"使用RPC: {provider_url}")
     
     # 创建 Web3 实例
     w3 = Web3(HTTPProvider(provider_url))
     
     # 检查连接
     if not w3.is_connected():
-        raise ConnectionError(f"Failed to connect to {provider_url}")
+        raise ConnectionError(f"RPC链接失败 {provider_url}")
     
     # 获取签名账户
     signer = get_account_from_env("ETH_SIGNER_KEY")
@@ -134,9 +134,9 @@ def setup_web3(network: Network):
     # 设置 Flashbots
     flashbot(w3, signer, relay_url)
     
-    logger.info(f"Connected to {network.value} network")
-    logger.info(f"Chain ID: {w3.eth.chain_id}")
-    logger.info(f"Latest block: {w3.eth.block_number}")
+    logger.info(f"连接到 {network.value} ")
+    logger.info(f"链 ID: {w3.eth.chain_id}")
+    logger.info(f"最新区块: {w3.eth.block_number}")
     
     return w3
 
@@ -145,8 +145,8 @@ def log_account_balances(w3: Web3, sender: str, receiver: str):
     sender_balance = w3.eth.get_balance(Web3.to_checksum_address(sender))
     receiver_balance = w3.eth.get_balance(Web3.to_checksum_address(receiver))
     
-    logger.info(f"Sender balance: {Web3.from_wei(sender_balance, 'ether'):.6f} ETH")
-    logger.info(f"Receiver balance: {Web3.from_wei(receiver_balance, 'ether'):.6f} ETH")
+    logger.info(f"发送者余额 : {Web3.from_wei(sender_balance, 'ether'):.6f} ETH")
+    logger.info(f"接收者余额: {Web3.from_wei(receiver_balance, 'ether'):.6f} ETH")
 
 def create_transaction(w3: Web3, sender: str, receiver: str, nonce: int, network: Network) -> TxParams:
     """创建交易"""
@@ -166,18 +166,48 @@ def create_transaction(w3: Web3, sender: str, receiver: str, nonce: int, network
             "from": Web3.to_checksum_address(sender),
             "to": Web3.to_checksum_address(receiver),
             "gas": gas_estimate,
-            "value": Web3.to_wei(0.001, "ether"),
+            "value": Web3.to_wei(0.01, "ether"),
             "nonce": nonce,
             "maxFeePerGas": max_fee,
             "maxPriorityFeePerGas": max_priority_fee,
             "chainId": FLASHBOTS_NETWORKS[network]["chain_id"],
         }
+
+        """
         
-        logger.debug(f"Created transaction: {tx}")
+        bundleTransactions = [
+        {
+            signer: wallet,
+            transaction: {
+            to: openspaceNFTAddress,
+            data: openspaceNFT.interface.encodeFunctionData("startPresale"),
+            chainId: 11155111,
+            gasLimit: 100000,
+            maxFeePerGas: ethers.parseUnits("10", "gwei"),
+            maxPriorityFeePerGas: ethers.parseUnits("2", "gwei"),
+            type: 2, // EIP-1559 transaction
+            },
+        },
+        {
+            signer: wallet,
+            transaction: {
+            to: openspaceNFTAddress,
+            data: openspaceNFT.interface.encodeFunctionData("participateInPresale"),
+            chainId: 11155111,
+            gasLimit: 100000,
+            maxFeePerGas: ethers.parseUnits("10", "gwei"),
+            maxPriorityFeePerGas: ethers.parseUnits("2", "gwei"),
+            type: 2, // EIP-1559 transaction
+            },
+        },
+        ];
+        """
+        
+        logger.debug(f"创建交易错误: {tx}")
         return tx
         
     except Exception as e:
-        logger.error(f"Error creating transaction: {e}")
+        logger.error(f"创建交易错误: {e}")
         raise
 
 def main():
@@ -196,7 +226,7 @@ def main():
         
         # 检查初始余额
         sender_balance = w3.eth.get_balance(sender.address)
-        required_balance = Web3.to_wei(0.02, "ether")  # 1 ETH + 预留gas
+        required_balance = Web3.to_wei(0.12, "ether")  # 1 ETH + 预留gas
         if sender_balance < required_balance:
             logger.error(f"钱包余额不足，需至少：{Web3.from_wei(required_balance, 'ether')} ETH")
             return
@@ -219,7 +249,7 @@ def main():
                 logger.info("预售未开启，等待中...")
             time.sleep(1)
 
-        # 3. 构造 presale(100) 交易
+        # 3. 构造 presale(1) 交易
         nonce = w3.eth.get_transaction_count(sender.address)
         presale_tx = nft_contract.functions.presale(1).build_transaction({
             "from": sender.address,

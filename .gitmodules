@@ -67,3 +67,6 @@
 [submodule "61DAO/DAO/lib/openzeppelin-contracts"]
 	path = 61DAO/DAO/lib/openzeppelin-contracts
 	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "63TheGraph/NFT-market/lib/forge-std"]
+	path = 63TheGraph/NFT-market/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
