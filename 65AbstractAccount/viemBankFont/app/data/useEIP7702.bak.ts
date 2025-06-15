@@ -107,6 +107,7 @@ async function main() {
     const authorization = await walletClient.signAuthorization({
       contractAddress: SIMPLE_DELEGATE_ADDRESS,
       executor: 'self', 
+      account: eoa.address
     });
 
 
